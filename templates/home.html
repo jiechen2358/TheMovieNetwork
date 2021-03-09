@@ -1,12 +1,53 @@
 <!DOCTYPE html>
-<html lang="en" dir="ltr">
-  <head>
-    <meta charset="utf-8">
+<html lang="en">
+<head>
     <title>Movie Network</title>
-  </head>
-  <body>
-    <h1>Movie Network</h1>
-    <p>CodeBunnyz Database Project</p>
-    <p>Search a movie</p>
-  </body>
+    <!-- Meta -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
+    <meta name="author" content="CodeBunnyz" />
+
+    <!-- Required Fremwork -->
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/bootstrap/css/bootstrap.min.css') }}">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='icon/font-awesome/css/font-awesome.min.css') }}">
+    <!-- Style.css -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+
+</head>
+<body>
+    <div class="pcoded-main-container">
+        <div class="pcoded-content">
+            <!-- Page-header start -->
+            <div class="page-header">
+                <div class="page-block">
+                    <div class="row align-items-center">
+                        <div class="col-md-8">
+                            <div class="page-header-title">
+                                <h5 class="m-b-10">Movie Network</h5>
+                                <p class="m-b-0">CodeBunnyz Database Project</p>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <ul class="breadcrumb">
+                                <li class="breadcrumb-item"><a href="#!">Sign In</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Page-header end -->
+        </div>
+
+        <div class="p-15 p-b-0">
+            <form class="form-material">
+                <div class="form-group form-primary">
+                    <input type="text" name="search-movie" class="form-control" placeholder="Search Movie">
+                    <span class="form-bar"></span>
+                </div>
+            </form>
+        </div>
+    </div>
+</body>
 </html>

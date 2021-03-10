@@ -48,6 +48,29 @@
                 </div>
             </form>
         </div>
+
+        <p>The following names are fetched from the user table in MySQL database:</p>
+
+        <div>
+            <!-- relational database section start -->
+            {% for row in results %}
+            <table style="width:100%">
+                  <tr>
+                     <td>{{ row[0] }}</td>
+                     <td>{{ row[1] }}</td>
+                     <td>{{ row[2] }}</td>
+                     <td>{{ row[4] }}</td>
+                     <td>{{ row[5] }}</td>
+                     <td>{{ row[6] }}</td>
+                     <td>{{ row[7] }}</td>
+                     <td>{{ row[8] }}</td>
+                     <td>{{ row[9] }}</td>
+                    </tr>
+            </table>
+            {% endfor %}
+            <!-- relational database section end -->
+        </div>
+
     </div>
 </body>
 </html>

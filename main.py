@@ -15,7 +15,7 @@ mysql.init_app(app)
 def main():
     conn = mysql.connect()
     cursor = conn.cursor()
-    sql = "select name from actors limit 10;"
+    sql = "Select imdb_name_id, name from actors order by rand() LIMIT 10;"
     cursor.execute(sql)
     results = cursor.fetchall()
     return  render_template("home.html", results=results)

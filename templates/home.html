@@ -49,13 +49,17 @@
             </form>
         </div>
 
-        <p>The following names are fetched from the user table in MySQL database:</p>
+        <p>The following data is randomly selected from the actors table in MySQL database:</p>
 
         <div>
             <!-- relational database section start -->
+            <table style="width:50%">
+                <tr>
+                    <th>imdb_id</th>
+                    <th>name</th>
+                </tr>
             {% for row in results %}
-            <table style="width:100%">
-                  <tr>
+                <tr>
                      <td>{{ row[0] }}</td>
                      <td>{{ row[1] }}</td>
                      <td>{{ row[2] }}</td>
@@ -65,9 +69,9 @@
                      <td>{{ row[7] }}</td>
                      <td>{{ row[8] }}</td>
                      <td>{{ row[9] }}</td>
-                    </tr>
-            </table>
+                </tr>
             {% endfor %}
+            </table>
             <!-- relational database section end -->
         </div>
 

@@ -75,6 +75,32 @@
             <!-- relational database section end -->
         </div>
 
+        <p> </p>
+        <p>The following data is selected from the neo4j database:</p>
+
+        <div>
+            <!-- neo4j database section start -->
+            <table style="width:50%">
+                <tr>
+                    <th>actor name</th>
+                    <th>movie name</th>
+                </tr>
+            {% for row in neo4jResults %}
+                <tr>
+                     <td>{{ row[0][0]["movieTitle"] }}</td>
+                     <td>{{ row[1][0]["actor_name"] }}</td>
+                     <td>{{ row[2] }}</td>
+                     <td>{{ row[4] }}</td>
+                     <td>{{ row[5] }}</td>
+                     <td>{{ row[6] }}</td>
+                     <td>{{ row[7] }}</td>
+                     <td>{{ row[8] }}</td>
+                     <td>{{ row[9] }}</td>
+                </tr>
+            {% endfor %}
+            </table>
+            <!-- neo4j database section end -->
+        </div>
     </div>
 </body>
 </html>

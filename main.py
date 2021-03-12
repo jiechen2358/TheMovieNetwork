@@ -1,6 +1,7 @@
 from flask import Flask, render_template, url_for, request, json
 from flaskext.mysql import MySQL
 from neo4j import GraphDatabase
+#from werkzeug import generate_password_hash, check_password_hash
 
 app = Flask(__name__)
 mysql = MySQL()
@@ -15,7 +16,7 @@ mysql.init_app(app)
 # neo4j configurations
 DATABASE_USERNAME="neo4j"
 DATABASE_PASSWORD="CodeBunnyz123"
-DATABASE_URL="bolt://localhost"
+DATABASE_URL="bolt://172.22.152.19:7687"
 
 class SampleDataFromNeo4j:
 
@@ -61,16 +62,26 @@ class SampleDataFromNeo4j:
 
 @app.route('/')
 def main():
-    conn = mysql.connect()
-    cursor = conn.cursor()
-    sql = "Select imdb_name_id, name from actors order by rand() LIMIT 10;"
-    cursor.execute(sql)
-    results = cursor.fetchall()
-
-    neo4jdb = SampleDataFromNeo4j(DATABASE_URL, DATABASE_USERNAME, DATABASE_PASSWORD)
-    movies_actors = neo4jdb.read_sample_from_neo4j()
-    neo4jdb.close()
+    try:
+        # fetch from mysql
+        conn = mysql.connect()
+        cursor = conn.cursor()
+        sql = "Select imdb_name_id, name from actors order by rand() LIMIT 10;"
+        cursor.execute(sql)
+        results = cursor.fetchall()
+    finally:
+        cursor.close()
+        conn.close()
+    
+    try:
+        # fetch neo4j
+        neo4jdb = SampleDataFromNeo4j(DATABASE_URL, DATABASE_USERNAME, DATABASE_PASSWORD)
+        movies_actors = neo4jdb.read_sample_from_neo4j()
+    finally:
+        neo4jdb.close()
+    
     return  render_template("home.html", results=results, neo4jResults=movies_actors)
+        
 
 @app.route('/showSignUp')
 def showSignUp():

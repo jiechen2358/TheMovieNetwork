@@ -1,4 +1,4 @@
-from flask import Flask, render_template, url_for
+from flask import Flask, render_template, url_for, request, json
 from flaskext.mysql import MySQL
 from neo4j import GraphDatabase
 
@@ -75,6 +75,17 @@ def main():
 @app.route('/showSignUp')
 def showSignUp():
     return render_template('signup.html')
+
+@app.route('/signUp', methods=['POST'])
+def signUp():
+    # read the posted values from the UI
+    _username = request.form['inputUsername']
+    _password = request.form['inputPassword']
+    # validate the received values
+    if _username and _password:
+        return json.dumps({'html':'<span>All fields good !!</span>'})
+    else:
+        return json.dumps({'html':'<span>Enter the required fields</span>'})
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0') 

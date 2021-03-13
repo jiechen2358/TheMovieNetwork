@@ -1,8 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <title>Python Flask Bucket List App</title>
-
+<head>
+  <title>Sign In & Sign Up</title>
     <!-- Required Fremwork -->
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/bootstrap/css/bootstrap.min.css') }}">
     <!-- Font Awesome -->
@@ -12,37 +11,66 @@
 
     <script type="text/javascript" src="../static/js/jquery-3.6.0.min.js"></script>
     <script type="text/javascript" src="../static/js/signUp.js"></script>
+</head>
 
-  </head>
+<body themebg-pattern="theme1">
+    <div class="pcoded-container">
+        <div class="page-header p-35">
+            <div class="row align-items-center">
+                <div class="page-header-title m-l-20">
+                    <h5 class="m-b-10">Movie Network</h5>
+                    <p class="m-b-0">CodeBunnyz Database Project</p>
+                </div>
+            </div>
+        </div>
 
-  <body>
-
-    <div class="container">
-      <div class="header">
-        <nav>
-          <ul class="nav nav-pills pull-right">
-            <li role="presentation" ><a href="/">Home</a></li>
-          </ul>
-        </nav>
-        <h3 class="text-muted">The Movie Network</h3>
-      </div>
-
-      <div class="jumbotron">
-        <h1>Sign Up</h1>
-        <form class="form-signin">
-        <label for="inputUsername" class="sr-only">Username</label>
-        <input type="username" name="inputUsername" id="inputUsername" class="form-control" placeholder="Username" required autofocus>
-        <label for="inputPassword" class="sr-only">Password</label>
-        <input type="password" name="inputPassword" id="inputPassword" class="form-control" placeholder="Password" required>
-
-        <button id="btnSignUp" class="btn btn-lg btn-primary btn-block" type="button">Sign up</button>
-      </form>
-      </div>
-
-      <footer class="footer">
-        <p>&copy; Company 2015</p>
-      </footer>
-
+        <section class="login-block">
+            <!-- Container-fluid starts -->
+            <div class="container">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <!-- Authentication card start -->
+                        <form class="md-float-material form-material">
+                            <div class="auth-box card">
+                                <div class="card-block">
+                                    <div class="row m-b-20">
+                                        <div class="col-md-12">
+                                            <h3 class="text-center">Sign In</h3>
+                                        </div>
+                                    </div>
+                                    <div class="form-group form-primary">
+                                        <input type="text" name="username" id="inputUsername" class="form-control" required autofocus>
+                                        <span class="form-bar"></span>
+                                        <label class="float-label">Username</label>
+                                    </div>
+                                    <div class="form-group form-primary">
+                                        <input type="password" name="password" id="inputPassword" class="form-control" required>
+                                        <span class="form-bar"></span>
+                                        <label class="float-label">Password</label>
+                                    </div>
+                                    <div class="row m-t-30">
+                                        <div class="col-md-12">
+                                            <button type="button" class="btn btn-primary btn-md btn-block waves-effect waves-light text-center m-b-20">Login in</button>
+                                            <button type="button" class="btn btn-primary btn-md btn-block waves-effect waves-light text-center m-b-20">Sign up</button>
+                                        </div>
+                                    </div>
+                                    <hr/>
+                                    <div class="row">
+                                        <div class="col-md-10">
+                                            <p class="text-inverse text-left"><a href="/"><b>Back to Home</b></a></p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                        <!-- end of form -->
+                    </div>
+                    <!-- end of col-sm-12 -->
+                </div>
+                <!-- end of row -->
+            </div>
+            <!-- end of container-fluid -->
+        </section>
     </div>
-  </body>
+</body>
 </html>

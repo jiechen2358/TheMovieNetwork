@@ -1,7 +1,7 @@
 from flask import Flask, render_template, url_for, request, json
 from flaskext.mysql import MySQL
 from neo4j import GraphDatabase
-#from werkzeug import generate_password_hash, check_password_hash
+from werkzeug.security import generate_password_hash, check_password_hash
 
 app = Flask(__name__)
 mysql = MySQL()
@@ -69,6 +69,7 @@ def main():
         sql = "Select imdb_name_id, name from actors order by rand() LIMIT 10;"
         cursor.execute(sql)
         results = cursor.fetchall()
+
     finally:
         cursor.close()
         conn.close()
@@ -77,15 +78,16 @@ def main():
         # fetch neo4j
         neo4jdb = SampleDataFromNeo4j(DATABASE_URL, DATABASE_USERNAME, DATABASE_PASSWORD)
         movies_actors = neo4jdb.read_sample_from_neo4j()
+
     finally:
         neo4jdb.close()
     
     return  render_template("home.html", results=results, neo4jResults=movies_actors)
         
 
-@app.route('/showSignUp')
+@app.route('/showSignIn')
 def showSignUp():
-    return render_template('signup.html')
+    return render_template('signin.html')
 
 @app.route('/signUp', methods=['POST'])
 def signUp():
@@ -94,7 +96,23 @@ def signUp():
     _password = request.form['inputPassword']
     # validate the received values
     if _username and _password:
-        return json.dumps({'html':'<span>All fields good !!</span>'})
+        try:
+            # All Good, let's call MySQL            
+            conn = mysql.connect()
+            cursor = conn.cursor()
+            _hashed_password = generate_password_hash(_password,salt_length=20)
+            cursor.callproc('sp_createUser',(_username,_hashed_password))
+            data = cursor.fetchall()
+
+            if len(data) is 0:
+                conn.commit()
+                return json.dumps({'message':'User created successfully !'})
+            else:
+                return json.dumps({'error':str(data[0])})
+        finally:
+            cursor.close()
+            conn.close()
+
     else:
         return json.dumps({'html':'<span>Enter the required fields</span>'})
 

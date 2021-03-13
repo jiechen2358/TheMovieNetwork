@@ -86,8 +86,12 @@ def main():
         
 
 @app.route('/showSignIn')
-def showSignUp():
+def showSignIn():
     return render_template('signin.html')
+
+@app.route('/showSignUp')
+def showSignUp():
+    return render_template('signup.html')
 
 @app.route('/signUp', methods=['POST'])
 def signUp():

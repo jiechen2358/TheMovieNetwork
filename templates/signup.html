@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <title>Sign In</title>
+  <title>Sign Up</title>
     <!-- Required Fremwork -->
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/bootstrap/css/bootstrap.min.css') }}">
     <!-- Font Awesome -->
@@ -35,7 +35,7 @@
                                 <div class="card-block">
                                     <div class="row m-b-20">
                                         <div class="col-md-12">
-                                            <h3 class="text-center">Sign In</h3>
+                                            <h3 class="text-center">Sign Up</h3>
                                         </div>
                                     </div>
                                     <div class="form-group form-primary">
@@ -43,21 +43,32 @@
                                         <span class="form-bar"></span>
                                     </div>
                                     <div class="form-group form-primary">
-                                        <input type="password" name="password" id="inputPassword" class="form-control" placeholder="Password" required>
+                                        <input type="text" name="username" id="inputEmail" class="form-control" placeholder="Email Address" required autofocus>
                                         <span class="form-bar"></span>
+                                    </div>
+                                    <div class="row">
+                                    <div class="col-sm-6">
+                                        <div class="form-group form-primary">
+                                            <input type="password" name="password" class="form-control" placeholder="Password" required>
+                                            <span class="form-bar"></span>
+                                        </div>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <div class="form-group form-primary">
+                                                <input type="password" name="confirm-password" class="form-control" placeholder="Confirm Password" required>
+                                                <span class="form-bar"></span>
+                                            </div>
+                                        </div>
                                     </div>
                                     <div class="row m-t-30">
                                         <div class="col-md-12">
-                                            <button type="button" class="btn btn-primary btn-md btn-block waves-effect waves-light text-center m-b-20">Login in</button>
+                                            <button type="button" class="btn btn-primary btn-md btn-block waves-effect waves-light text-center m-b-20">Sign up</button>
                                         </div>
                                     </div>
                                     <div class="row m-t-25 text-left">
                                         <div class="col-12">
                                             <div class="text-left f-left">
                                                 <p class="text-inverse text-left"><a href="/"><b>Back to Home</b></a></p>
-                                            </div>
-                                            <div class="text-right f-right">
-                                                <a href="/showSignUp" class="text-right f-w-600"> New user?</a>
                                             </div>
                                         </div>
                                     </div>

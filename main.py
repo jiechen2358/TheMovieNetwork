@@ -26,6 +26,17 @@ class SampleDataFromNeo4j:
     def close(self):
         self.driver.close()
 
+    def get_movies(self, q):
+        with self.driver.session() as session:
+            movies = []
+            result = session.read_transaction(lambda tx: list(tx.run("MATCH (movie:Movie) "
+                                                             "WHERE movie.movieTitle =~ $title "
+                                                             "RETURN movie", {"title": "(?i).*" + q + ".*"}
+                                                             )))
+            for record in result:
+                movies.append(record.values())
+            return movies
+
     def read_sample_from_neo4j(self):
         with self.driver.session() as session:
             movies = session.read_transaction(self._read_movie_neo4j)
@@ -83,7 +94,18 @@ def main():
         neo4jdb.close()
     
     return  render_template("home.html", results=results, neo4jResults=movies_actors)
-        
+
+@app.route('/search', methods=['GET'])
+def get_query_string():
+    try:
+        # fetch neo4j
+        neo4jdb = SampleDataFromNeo4j(DATABASE_URL, DATABASE_USERNAME, DATABASE_PASSWORD)
+        movies = neo4jdb.get_movies(request.args["search"])
+
+    finally:
+        neo4jdb.close()
+
+    return  render_template("home.html", neo4jSearchResults=movies)
 
 @app.route('/showSignIn')
 def showSignIn():
@@ -108,7 +130,7 @@ def signUp():
             cursor.callproc('sp_createUser',(_username,_hashed_password))
             data = cursor.fetchall()
 
-            if len(data) is 0:
+            if len(data) == 0:
                 conn.commit()
                 return json.dumps({'message':'User created successfully !'})
             else:

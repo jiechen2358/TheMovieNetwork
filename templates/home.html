@@ -41,9 +41,9 @@
         </div>
 
         <div class="p-35 p-b-0">
-            <form class="form-material">
+            <form class="form-material" id="search" action="/search">
                 <div class="form-group form-primary">
-                    <input type="text" name="search-movie" class="form-control" placeholder="Search Movie">
+                    <input type="text" name="search" class="form-control" placeholder="Search Movie">
                     <span class="form-bar"></span>
                 </div>
             </form>
@@ -86,17 +86,26 @@
                 <tr>
                      <td>{{ row[0][0]["movieTitle"] }}</td>
                      <td>{{ row[1][0]["actor_name"] }}</td>
-                     <td>{{ row[2] }}</td>
-                     <td>{{ row[4] }}</td>
-                     <td>{{ row[5] }}</td>
-                     <td>{{ row[6] }}</td>
-                     <td>{{ row[7] }}</td>
-                     <td>{{ row[8] }}</td>
-                     <td>{{ row[9] }}</td>
                 </tr>
             {% endfor %}
             </table>
             <!-- neo4j database section end -->
+        </div>
+
+        <div class="p-35">
+            <p>Search from the neo4j database:</p>
+            <!-- neo4j database search section start -->
+            <table style="width:50%">
+                <tr>
+                    <th>movie name</th>
+                </tr>
+            {% for row in neo4jSearchResults %}
+                <tr>
+                     <td>{{ row[0]["movieTitle"] }}</td>
+                </tr>
+            {% endfor %}
+            </table>
+            <!-- neo4j database search section end -->
         </div>
     </div>
 </body>

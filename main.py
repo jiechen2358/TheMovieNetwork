@@ -118,15 +118,15 @@ def showSignUp():
 @app.route('/signUp', methods=['POST'])
 def signUp():
     # read the posted values from the UI
-    _username = request.form['inputUsername']
-    _password = request.form['inputPassword']
+    _username = request.form['username']
+    _password = request.form['password']
     # validate the received values
     if _username and _password:
         try:
             # All Good, let's call MySQL            
             conn = mysql.connect()
             cursor = conn.cursor()
-            _hashed_password = generate_password_hash(_password,salt_length=20)
+            _hashed_password = generate_password_hash(_password, method="sha1")
             cursor.callproc('sp_createUser',(_username,_hashed_password))
             data = cursor.fetchall()
 

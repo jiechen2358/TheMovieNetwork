@@ -1,9 +1,12 @@
-from flask import Flask, render_template, url_for, request, json
+import flask
+from flask import Flask, render_template, url_for, request, json,redirect, jsonify
+from flask_swagger import swagger
 from flaskext.mysql import MySQL
 from neo4j import GraphDatabase
 from werkzeug.security import generate_password_hash, check_password_hash
 
 app = Flask(__name__)
+app.secret_key = 'super secret key'
 mysql = MySQL()
 
 # MySQL configurations
@@ -120,27 +123,33 @@ def signUp():
     # read the posted values from the UI
     _username = request.form['username']
     _password = request.form['password']
-    # validate the received values
-    if _username and _password:
-        try:
-            # All Good, let's call MySQL            
-            conn = mysql.connect()
-            cursor = conn.cursor()
+    _message = ''
+    _httpStatusCode = 200
+    try:
+        conn = mysql.connect()
+        cursor = conn.cursor()
+        cursor.execute("SELECT * FROM users WHERE username = %s;", _username)
+        results = cursor.fetchone()
+        if results:
+            _message = "username existed"
+            _httpStatusCode = 500
+            return redirect(url_for('showSignUp'))
+        else:
             _hashed_password = generate_password_hash(_password, method="sha1")
             cursor.callproc('sp_createUser',(_username,_hashed_password))
             data = cursor.fetchall()
 
             if len(data) == 0:
                 conn.commit()
-                return json.dumps({'message':'User created successfully !'})
+                _message = "User created successfully :)"
+                _httpStatusCode = 200
             else:
-                return json.dumps({'error':str(data[0])})
-        finally:
-            cursor.close()
-            conn.close()
-
-    else:
-        return json.dumps({'html':'<span>Enter the required fields</span>'})
+                _message = "Error: User creation failed"
+                _httpStatusCode = 400
+    finally:
+        cursor.close()
+        conn.close()
+    return _message
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0',port='5001') 
+    app.run(host='0.0.0.0',port='5001',debug=True)

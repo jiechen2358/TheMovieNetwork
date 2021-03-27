@@ -1,6 +1,4 @@
-import flask
 from flask import Flask, render_template, url_for, request, json,redirect, jsonify
-from flask_swagger import swagger
 from flaskext.mysql import MySQL
 from neo4j import GraphDatabase
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -132,8 +130,7 @@ def signUp():
         results = cursor.fetchone()
         if results:
             _message = "username existed"
-            _httpStatusCode = 500
-            return redirect(url_for('showSignUp'))
+            _httpStatusCode = 400
         else:
             _hashed_password = generate_password_hash(_password, method="sha1")
             cursor.callproc('sp_createUser',(_username,_hashed_password))
@@ -149,7 +146,7 @@ def signUp():
     finally:
         cursor.close()
         conn.close()
-    return _message
+    return _message, _httpStatusCode
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0',port='5001',debug=True)
+    app.run(host='0.0.0.0',port='5001',debug=False)

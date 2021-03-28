@@ -29,7 +29,7 @@
                 <div class="row">
                     <div class="col-sm-12">
                         <!-- Authentication card start -->
-                        <form class="md-float-material form-material">
+                        <form action = "/login" method="post" class="md-float-material form-material">
                             <div class="auth-box card">
                                 <div class="card-block">
                                     <div class="row m-b-20">
@@ -45,9 +45,10 @@
                                         <input type="password" name="password" id="inputPassword" class="form-control" placeholder="Password" required>
                                         <span class="form-bar"></span>
                                     </div>
+                                    <div class="msg">{{ msg }}</div>
                                     <div class="row m-t-30">
                                         <div class="col-md-12">
-                                            <button type="button" class="btn btn-primary btn-md btn-block waves-effect waves-light text-center m-b-20">Login in</button>
+                                            <button type="submit" class="btn btn-primary btn-md btn-block waves-effect waves-light text-center m-b-20">Login in</button>
                                         </div>
                                     </div>
                                     <div class="row m-t-25 text-left">
@@ -56,8 +57,9 @@
                                                 <p class="text-inverse text-left"><a href="/"><b>Back to Home</b></a></p>
                                             </div>
                                             <div class="text-right f-right">
-                                                <a href="/showSignUp" class="text-right f-w-600"> New user?</a>
+                                                <a href="/signup" class="text-right f-w-600"> New user?</a>
                                             </div>
+                                            
                                         </div>
                                     </div>
                                 </div>

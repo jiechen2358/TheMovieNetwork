@@ -1,22 +1,21 @@
 $(function(){
-    $('#btnSignUp').click(function(e){
-        e.preventDefault();
-        $.ajax({
-            url: '/signUp',
-            data: $('form').serialize(),
-            type: 'POST',
-            async: false, // this is needed in order to get a proper response from server (server is doing a database query and thus takes long)
-            success: function(response){
-                alert(response)
-                window.location.href = "/showSignIn"; // this is to redirect to signin page after a successful signup
-            },
+	$('#btnSignUp').click(function(){
+		$.ajax({
+			url: '/signUp',
+			data: $('form').serialize(),
+			type: 'POST',
+			success: function(response){
+				console.log(response);
+			},
             error: function(jqXHR, textStatus, errorThrown) {
+                console.log(jqXHR.responseText);
                 console.log(textStatus);
                 console.log(errorThrown);
+                alert(`btn js error`);
                 alert(jqXHR.responseText);
             }
-        });
-    });
+		});
+	});
 });
 
 function check_pass() { /* check if submit button should be enabled, default is disabled*/

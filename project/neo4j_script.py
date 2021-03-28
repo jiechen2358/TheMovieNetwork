@@ -9,17 +9,6 @@ class SampleDataFromNeo4j:
     def __init__(self, uri, user, password):
         self.driver = GraphDatabase.driver(uri, auth=(user, password))
 
-    def init_app(self,app):
-        app.teardown_appcontext(self.teardown)
-
-
-    def teardown(self, exception):
-        ctx = _app_ctx_stack.top
-
-        # if the application context has a driver, close it.
-        if hasattr(ctx, 'graphdb'):
-            ctx.graphdb.close()
-
     def close(self):
         self.driver.close()
 

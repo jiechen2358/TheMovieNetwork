@@ -1,10 +1,12 @@
 
 from flask import Flask
 from flaskext.mysql import MySQL
+#from flask.ext.neo4jdriver import Neo4jDriver
 
 
 
 mysql = MySQL()
+#neo4jdb =Neo4jDriver()
 
 
 def create_app():
@@ -20,17 +22,23 @@ def create_app():
 
 
 	# neo4j configurations
-	DATABASE_USERNAME="neo4j"
-	DATABASE_PASSWORD="CodeBunnyz123"
-	DATABASE_URL="bolt://172.22.152.19:7687"
-  
+	#app.config['GRAPHDB_URI'] = 'bolt://172.22.152.19:7687'
+	#app.config['GRAPHDB_USER'] = 'neo4j'
+	#app.config['GRAPHDB_PASS'] = 'CodeBunnyz123'
+	#neo4jdb.init_app(app)
+
+	
+
+  	# blueprint for non-auth parts of app
+	from .main import main_bp 
+	app.register_blueprint(main_bp)
 
 	# blueprint for auth routes in our app
-	from .auth import auth as auth_blueprint
-	app.register_blueprint(auth_blueprint)
+	from .auth import auth_bp 
+	app.register_blueprint(auth_bp)
 
-	# blueprint for non-auth parts of app
-	from .main import main as main_blueprint
-	app.register_blueprint(main_blueprint)
+	# blueprint for neo4j part of app 
+	from .neo4j_script import neo4j_bp
+	app.register_blueprint(neo4j_bp)
 
 	return app

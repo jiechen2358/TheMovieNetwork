@@ -1,9 +1,9 @@
 from flask import Blueprint, render_template, request, url_for,session, redirect
 from . import mysql 
 
-auth = Blueprint('auth', __name__)
+auth_bp = Blueprint('auth_bp', __name__)
 
-@auth.route('/login', methods=['GET', 'POST'])
+@auth_bp.route('/login', methods=['GET', 'POST'])
 def login():
 	msg = ''
 	if request.method == 'POST' and 'username' in request.form and 'password' in request.form:
@@ -23,7 +23,7 @@ def login():
 			session['id'] = user[0]
 			session['username'] = user[1]
 			# Redirect to profile page 
-			return redirect(url_for('main.profile'))
+			return redirect(url_for('main_bp.profile'))
 		else:
 			# User doesnt exist or username/password incorrect
 			msg = 'Incorrect username/password!'
@@ -41,7 +41,7 @@ def try_create_user(username, password):
 		conn.commit()
 		return 'You have successfully registered!'
 
-@auth.route('/signup', methods=['GET', 'POST'])
+@auth_bp.route('/signup', methods=['GET', 'POST'])
 def signup():
 	# Output message if something goes wrong...
 	msg = ''
@@ -59,10 +59,10 @@ def signup():
 	# Show registration form with message (if any)
 	return render_template('signup.html', msg=msg)
 
-@auth.route('/logout')
+@auth_bp.route('/logout')
 def logout():
 	# Remove session data, this will log the user out
 	session.pop('loggedin', None)
 	session.pop('id', None)
 	session.pop('username', None)
-	return redirect(url_for('login'))
+	return redirect(url_for('main_bp'))

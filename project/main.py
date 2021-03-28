@@ -2,13 +2,13 @@ from flask import Blueprint, render_template,session
 from . import mysql 
 
 
-main = Blueprint('main', __name__)
+main_bp = Blueprint('main_bp', __name__)
 
 
-@main.route('/')
+@main_bp.route('/')
 def index():
 	return render_template("home.html")
 
-@main.route('/profile')
+@main_bp.route('/profile')
 def profile():
 	return 'hi {}, here is your profile'.format(session['username'])

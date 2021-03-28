@@ -1,9 +1,9 @@
 dataset/
 processed/
 .DS_Store
-.ipynb_checkpoints
+.ipynb_checkpoints/
 *.pyc
-__pycache/
+__pycache__/
 instance/
 
 .pytest_cache/

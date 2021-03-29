@@ -10,6 +10,7 @@
     <!-- Required Fremwork -->
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/bootstrap/css/bootstrap.min.css') }}">
     <!-- Font Awesome -->
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='icon/font-awesome/css/font-awesome.min.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/font-awesome.min.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/font-awesome-n.min.css') }}">
     <!-- Style.css -->
@@ -31,7 +32,10 @@
                         </div>
                         <div class="col-md-4">
                             <ul class="breadcrumb">
-                                <li class="breadcrumb-item"><a href="/login">Sign In</a>
+                                <li class="breadcrumb-item">
+                                    <a href="/"> <i class="fa fa-home"></i> </a>
+                                </li>
+                                <li class="breadcrumb-item">Hi User</li>
                                 </li>
                             </ul>
                         </div>
@@ -40,16 +44,6 @@
             </div>
             <!-- Page-header end -->
         </div>
-
-        <div class="p-35 p-b-0">
-            <form class="form-material" id="mysqlsearch" action="/mysqlsearch">
-                <div class="form-group form-primary">
-                    <input type="text" name="mysqlsearch" class="form-control" placeholder="Search Movie">
-                    <span class="form-bar"></span>
-                </div>
-            </form>
-        </div>
-
 
         <div class="pcoded-inner-content">
             <div class="main-body">
@@ -78,7 +72,7 @@
                                         </div>
                                     </div>
                                     <div class="col-9">
-                                        <p class="m-b-0">Rate this movie:</p>
+                                        <p class="m-b-0">Your rating:</p>
                                         <span class="fas fa-star checked"></span>
                                         <span class="fas fa-star checked"></span>
                                         <span class="fas fa-star checked"></span>
@@ -86,7 +80,7 @@
                                         <span class="fas fa-star"></span>
                                     </div>
                                     <div class="card mat-clr-stat-card text-white green m-15">
-                                        <button type="button" class="btn btn-warning waves-effect waves-light" data-toggle="popover" data-placement="bottom" title="tooltip on bottom" data-content="bottom by popover">rating
+                                        <button type="button" class="btn btn-warning waves-effect waves-light" data-toggle="popover" data-placement="bottom" title="tooltip on bottom" data-content="bottom by popover">update
                                         </button>
                                     </div>
                                     <div class="col-9">
@@ -116,7 +110,7 @@
                                         </div>
                                     </div>
                                     <div class="col-9">
-                                        <p class="m-b-0">Rate this movie:</p>
+                                        <p class="m-b-0">Your rating:</p>
                                         <span class="fas fa-star checked"></span>
                                         <span class="fas fa-star checked"></span>
                                         <span class="fas fa-star checked"></span>
@@ -124,7 +118,7 @@
                                         <span class="fas fa-star"></span>
                                     </div>
                                     <div class="card mat-clr-stat-card text-white green m-15">
-                                        <button type="button" class="btn btn-warning waves-effect waves-light" data-toggle="popover" data-placement="bottom" title="tooltip on bottom" data-content="bottom by popover">rating
+                                        <button type="button" class="btn btn-warning waves-effect waves-light" data-toggle="popover" data-placement="bottom" title="tooltip on bottom" data-content="bottom by popover">update
                                         </button>
                                     </div>
                                     <div class="col-9">
@@ -154,7 +148,7 @@
                                         </div>
                                     </div>
                                     <div class="col-9">
-                                        <p class="m-b-0">Rate this movie:</p>
+                                        <p class="m-b-0">Your rating:</p>
                                         <span class="fas fa-star checked"></span>
                                         <span class="fas fa-star checked"></span>
                                         <span class="fas fa-star checked"></span>
@@ -162,7 +156,7 @@
                                         <span class="fas fa-star"></span>
                                     </div>
                                     <div class="card mat-clr-stat-card text-white green m-15">
-                                        <button type="button" class="btn btn-warning waves-effect waves-light" data-toggle="popover" data-placement="bottom" title="tooltip on bottom" data-content="bottom by popover">rating
+                                        <button type="button" class="btn btn-warning waves-effect waves-light" data-toggle="popover" data-placement="bottom" title="tooltip on bottom" data-content="bottom by popover">update
                                         </button>
                                     </div>
                                     <div class="col-9">
@@ -180,72 +174,6 @@
             </div>
         </div>
 
-        <div class="p-35 p-b-0">
-            <form class="form-material" id="neo4jsearch" action="/neo4jsearch">
-                <div class="form-group form-primary">
-                    <input type="text" name="neo4jsearch" class="form-control" placeholder="Search Movie">
-                    <span class="form-bar"></span>
-                </div>
-            </form>
-        </div>
-
-        <div class="p-35">
-            <p>Search from the neo4j database:</p>
-            <!-- neo4j database search section start -->
-            <table style="width:50%">
-                <tr>
-                    <th>movie name</th>
-                </tr>
-            {% for row in neo4jSearchResults %}
-                <tr>
-                     <td>{{ row[0]["movieTitle"] }}</td>
-                </tr>
-            {% endfor %}
-            </table>
-            <!-- neo4j database search section end -->
-        </div>
-
-        <!-- relational database section -->
-<!--          <div class="p-35">
-            <p>The following data is randomly selected from the actors table in MySQL database:</p>
-            
-            <table style="width:50%">
-                <tr>
-                    <th>imdb_id</th>
-                    <th>name</th>
-                </tr>
-            {% for row in results %}
-                <tr>
-                     <td>{{ row[0] }}</td>
-                     <td>{{ row[1] }}</td>
-                     <td>{{ row[2] }}</td>
-                     <td>{{ row[4] }}</td>
-                     <td>{{ row[5] }}</td>
-                     <td>{{ row[6] }}</td>
-                     <td>{{ row[7] }}</td>
-                     <td>{{ row[8] }}</td>
-                     <td>{{ row[9] }}</td>
-                </tr>
-            {% endfor %}
-            </table>
-        </div> -->
-
-        <!-- neo4j database section -->
-<!--         <div class="p-35">
-            <p>The following data is selected from the neo4j database:</p>
-            <table style="width:50%">
-                <tr>
-                    <th>movie name</th>
-                    <th>actor name</th>
-                </tr>
-            {% for row in neo4jResults %}
-                <tr>
-                     <td>{{ row[0][0]["movieTitle"] }}</td>
-                     <td>{{ row[1][0]["actor_name"] }}</td>
-                </tr>
-            {% endfor %}
-            </table>
-        </div> -->
 
     </div>
 </body>

@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template,session
+from flask import Blueprint, render_template, session
 from . import mysql 
 
 
@@ -11,4 +11,4 @@ def index():
 
 @main_bp.route('/profile')
 def profile():
-	return 'hi {}, here is your profile'.format(session['username'])
+	return render_template("profile.html")

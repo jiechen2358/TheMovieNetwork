@@ -14,7 +14,6 @@
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/font-awesome-n.min.css') }}">
     <!-- Style.css -->
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
-
 </head>
 <body>
     <div class="pcoded-main-container">
@@ -31,8 +30,13 @@
                         </div>
                         <div class="col-md-4">
                             <ul class="breadcrumb">
-                                <li class="breadcrumb-item"><a href="/login">Sign In</a>
+                                {% if username %}
+                                   <li class="breadcrumb-item" id="username"><a href="/profile">{{username}}</a>
                                 </li>
+                                {% else %}
+                                    <li class="breadcrumb-item" id="login"><a href="/login">Log In</a>
+                                {% endif %}
+                                
                             </ul>
                         </div>
                     </div>

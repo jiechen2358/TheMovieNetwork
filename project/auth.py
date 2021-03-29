@@ -23,7 +23,7 @@ def login():
 			session['id'] = user[0]
 			session['username'] = user[1]
 			# Redirect to profile page 
-			return redirect(url_for('main_bp.profile'))
+			return redirect(url_for('main_bp.index'))
 		else:
 			# User doesnt exist or username/password incorrect
 			msg = 'Incorrect username/password!'
@@ -65,4 +65,4 @@ def logout():
 	session.pop('loggedin', None)
 	session.pop('id', None)
 	session.pop('username', None)
-	return redirect(url_for('main_bp'))
+	return redirect(url_for('main_bp.index'))

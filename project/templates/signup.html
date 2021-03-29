@@ -10,7 +10,19 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 
     <script type="text/javascript" src="../static/js/jquery-3.6.0.min.js"></script>
-    <script type="text/javascript" src="../static/js/signUp.js"></script>
+    <script>
+    var check_pass = function() {
+      if (document.getElementById('password').value ==
+          document.getElementById('confirm-password').value) {
+          document.getElementById('msg').style.color = 'green';
+          document.getElementById('msg').innerHTML = 'matching';
+      } else {
+            document.getElementById('msg').style.color = 'red';
+          document.getElementById('msg').innerHTML = 'not matching';
+      }
+    }
+    </script>
+    <!-- <script type="text/javascript" src="../static/js/signUp.js"></script> -->
 </head>
 
 <body>
@@ -29,7 +41,7 @@
                 <div class="row">
                     <div class="col-sm-12">
                         <!-- Authentication card start -->
-                        <form class="md-float-material form-material">
+                        <form action="/signup" method="post" class="md-float-material form-material">
                             <div class="auth-box card">
                                 <div class="card-block">
                                     <div class="row m-b-20">
@@ -38,7 +50,7 @@
                                         </div>
                                     </div>
                                     <div class="form-group form-primary">
-                                        <input type="text" name="username" id="inputUsername" class="form-control" placeholder="Username" required autofocus onkeyup='check_pass()' autocomplete="off">
+                                        <input type="text" name="username" id="inputUsername" class="form-control" placeholder="Username" required autofocus autocomplete="off">
                                         <span class="form-bar"></span>
                                     </div>
 <!--                                    <div class="form-group form-primary">
@@ -60,9 +72,10 @@
                                             </div>
                                         </div>
                                     </div>
+                                    <div class="msg" id = "msg">{{ msg }}</div>
                                     <div class="row m-t-30">
                                         <div class="col-md-12">
-                                            <button type="submit" id="btnSignUp" disabled="disabled" class="btn btn-primary btn-md btn-block waves-effect waves-light text-center m-b-20">Sign up</button>
+                                            <button type="submit" id="btnSignUp"  class="btn btn-primary btn-md btn-block waves-effect waves-light text-center m-b-20">Sign up</button>
                                         </div>
                                     </div>
                                     <div class="row m-t-25 text-left">

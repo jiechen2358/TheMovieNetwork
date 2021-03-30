@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, session
+from flask import Blueprint, render_template, session, request
 from . import mysql 
 
 
@@ -18,3 +18,13 @@ def profile():
 		return render_template("profile.html", username= session['username'])
 	else:
 		return render_template('signin.html')
+
+
+@main_bp.route('/mysqlsearch', methods=['GET'])
+def mysql_search():
+	keyword = request.args["mysqlsearch"]
+	conn = mysql.connect()
+	cursor = conn.cursor()
+	cursor.execute("SELECT * FROM movies WHERE title LIKE '%{}%'".format(keyword)) 
+	movies = cursor.fetchall()
+	return  render_template("home.html", mysqlSearchResults=movies)

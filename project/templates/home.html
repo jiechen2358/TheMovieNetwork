@@ -1,256 +1,272 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Movie Network</title>
-    <!-- Meta -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
-    <meta name="author" content="CodeBunnyz" />
+	<title>Movie Network</title>
+	<!-- Meta -->
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
+	<meta name="author" content="CodeBunnyz" />
 
-    <!-- Required Fremwork -->
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/bootstrap/css/bootstrap.min.css') }}">
-    <!-- Font Awesome -->
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/font-awesome.min.css') }}">
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/font-awesome-n.min.css') }}">
-    <!-- Style.css -->
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+	<!-- Required Fremwork -->
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/bootstrap/css/bootstrap.min.css') }}">
+	<!-- Font Awesome -->
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/font-awesome.min.css') }}">
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/font-awesome-n.min.css') }}">
+	<!-- Style.css -->
+	<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 <body>
-    <div class="pcoded-main-container">
-        <div class="pcoded-content">
-            <!-- Page-header start -->
-            <div class="page-header">
-                <div class="page-block">
-                    <div class="row align-items-center">
-                        <div class="col-md-8">
-                            <div class="page-header-title">
-                                <h5 class="m-b-10">Movie Network</h5>
-                                <p class="m-b-0">CodeBunnyz Database Project</p>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <ul class="breadcrumb">
-                                {% if username %}
-                                   <li class="breadcrumb-item" id="username"><a href="/profile">{{username}}</a>
-                                </li>
-                                {% else %}
-                                    <li class="breadcrumb-item" id="login"><a href="/login">Log In</a>
-                                {% endif %}
-                                
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- Page-header end -->
-        </div>
+	<div class="pcoded-main-container">
+		<div class="pcoded-content">
+			<!-- Page-header start -->
+			<div class="page-header">
+				<div class="page-block">
+					<div class="row align-items-center">
+						<div class="col-md-8">
+							<div class="page-header-title">
+								<h5 class="m-b-10">Movie Network</h5>
+								<p class="m-b-0">CodeBunnyz Database Project</p>
+							</div>
+						</div>
+						<div class="col-md-4">
+							<ul class="breadcrumb">
+								{% if username %}
+								   <li class="breadcrumb-item" id="username"><a href="/profile">Hi, {{username}}</a>
+									</li>
+									<li class="breadcrumb-item"><a href="/logout">Log Out</a>
+									</li>
+								{% else %}
+									<li class="breadcrumb-item" id="login"><a href="/login">Log In</a>
+								{% endif %}
+								
+							</ul>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- Page-header end -->
+		</div>
 
-        <div class="p-35 p-b-0">
-            <form class="form-material" id="mysqlsearch" action="/mysqlsearch">
-                <div class="form-group form-primary">
-                    <input type="text" name="mysqlsearch" class="form-control" placeholder="Search Movie">
-                    <span class="form-bar"></span>
-                </div>
-            </form>
-        </div>
+		<div class="p-35 p-b-0">
+			<form class="form-material" id="mysqlsearch" action="/mysqlsearch">
+				<div class="form-group form-primary">
+					<input type="text" name="mysqlsearch" class="form-control" placeholder="Search Movie">
+					<span class="form-bar"></span>
+				</div>
+			</form>
+		</div>
+		<div class="p-35">
+			<p>Search from the mysql database:</p>
+			<!-- neo4j database search section start -->
+			<table style="width:50%">
+				<tr>
+					<th>movie name</th>
+				</tr>
+					{% for row in mysqlSearchResults %}
+				<tr>
+					 <td>{{ row[2] }}</td>
+				</tr>
+			{% endfor %}
+			</table>
+			<!-- neo4j database search section end -->
+		</div>
+
+		<div class="pcoded-inner-content">
+			<div class="main-body">
+				<div class="page-wrapper">
+					<!-- Page-body start -->
+					<div class="page-body">
+						<div class="row">
+							<div class="col-sm-4">
+								<!-- popover card start -->
+								<div class="card o-visible">
+									<div class="card-header">
+										<h5>Movie Title</h5>
+									</div>
+									 <div class="card mat-clr-stat-card text-white blue m-15">
+										<div class="card-block">
+											<div class="row">
+												<div class="col-6 text-center">
+													<i class="fas fa-trophy mat-icon f-24"></i>
+													<p class="m-b-0">Movie Icon</p>
+												</div>
+												<div class="col-6 cst-cont bg-c-blue">
+													<h5>Cast</h5>
+													<p class="m-b-0">Movie Info</p>
+												</div>
+											</div>
+										</div>
+									</div>
+									<div class="col-9">
+										<p class="m-b-0">Rate this movie:</p>
+										<span class="fas fa-star checked"></span>
+										<span class="fas fa-star checked"></span>
+										<span class="fas fa-star checked"></span>
+										<span class="fas fa-star"></span>
+										<span class="fas fa-star"></span>
+									</div>
+									<div class="card mat-clr-stat-card text-white green m-15">
+										<button type="button" class="btn btn-warning waves-effect waves-light" data-toggle="popover" data-placement="bottom" title="tooltip on bottom" data-content="bottom by popover">rating
+										</button>
+									</div>
+									<div class="col-9">
+										<p class="m-b-0">4000+ Ratings Received</p>
+									</div>
+								</div>
+								<!-- popover card end -->
+							</div>
+							<div class="col-sm-4">
+								<!-- popover card start -->
+								<div class="card o-visible">
+									<div class="card-header">
+										<h5>Movie Title</h5>
+									</div>
+									 <div class="card mat-clr-stat-card text-white blue m-15">
+										<div class="card-block">
+											<div class="row">
+												<div class="col-6 text-center">
+													<i class="fas fa-trophy mat-icon f-24"></i>
+													<p class="m-b-0">Movie Icon</p>
+												</div>
+												<div class="col-6 cst-cont bg-c-blue">
+													<h5>Cast</h5>
+													<p class="m-b-0">Movie Info</p>
+												</div>
+											</div>
+										</div>
+									</div>
+									<div class="col-9">
+										<p class="m-b-0">Rate this movie:</p>
+										<span class="fas fa-star checked"></span>
+										<span class="fas fa-star checked"></span>
+										<span class="fas fa-star checked"></span>
+										<span class="fas fa-star"></span>
+										<span class="fas fa-star"></span>
+									</div>
+									<div class="card mat-clr-stat-card text-white green m-15">
+										<button type="button" class="btn btn-warning waves-effect waves-light" data-toggle="popover" data-placement="bottom" title="tooltip on bottom" data-content="bottom by popover">rating
+										</button>
+									</div>
+									<div class="col-9">
+										<p class="m-b-0">4000+ Ratings Received</p>
+									</div>
+								</div>
+								<!-- popover card end -->
+							</div>
+							<div class="col-sm-4">
+								<!-- popover card start -->
+								<div class="card o-visible">
+									<div class="card-header">
+										<h5>Movie Title</h5>
+									</div>
+									 <div class="card mat-clr-stat-card text-white blue m-15">
+										<div class="card-block">
+											<div class="row">
+												<div class="col-6 text-center">
+													<i class="fas fa-trophy mat-icon f-24"></i>
+													<p class="m-b-0">Movie Icon</p>
+												</div>
+												<div class="col-6 cst-cont bg-c-blue">
+													<h5>Cast</h5>
+													<p class="m-b-0">Movie Info</p>
+												</div>
+											</div>
+										</div>
+									</div>
+									<div class="col-9">
+										<p class="m-b-0">Rate this movie:</p>
+										<span class="fas fa-star checked"></span>
+										<span class="fas fa-star checked"></span>
+										<span class="fas fa-star checked"></span>
+										<span class="fas fa-star"></span>
+										<span class="fas fa-star"></span>
+									</div>
+									<div class="card mat-clr-stat-card text-white green m-15">
+										<button type="button" class="btn btn-warning waves-effect waves-light" data-toggle="popover" data-placement="bottom" title="tooltip on bottom" data-content="bottom by popover">rating
+										</button>
+									</div>
+									<div class="col-9">
+										<p class="m-b-0">4000+ Ratings Received</p>
+									</div>
+								</div>
+								<!-- popover card end -->
+							</div>
 
 
-        <div class="pcoded-inner-content">
-            <div class="main-body">
-                <div class="page-wrapper">
-                    <!-- Page-body start -->
-                    <div class="page-body">
-                        <div class="row">
-                            <div class="col-sm-4">
-                                <!-- popover card start -->
-                                <div class="card o-visible">
-                                    <div class="card-header">
-                                        <h5>Movie Title</h5>
-                                    </div>
-                                     <div class="card mat-clr-stat-card text-white blue m-15">
-                                        <div class="card-block">
-                                            <div class="row">
-                                                <div class="col-6 text-center">
-                                                    <i class="fas fa-trophy mat-icon f-24"></i>
-                                                    <p class="m-b-0">Movie Icon</p>
-                                                </div>
-                                                <div class="col-6 cst-cont bg-c-blue">
-                                                    <h5>Cast</h5>
-                                                    <p class="m-b-0">Movie Info</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-9">
-                                        <p class="m-b-0">Rate this movie:</p>
-                                        <span class="fas fa-star checked"></span>
-                                        <span class="fas fa-star checked"></span>
-                                        <span class="fas fa-star checked"></span>
-                                        <span class="fas fa-star"></span>
-                                        <span class="fas fa-star"></span>
-                                    </div>
-                                    <div class="card mat-clr-stat-card text-white green m-15">
-                                        <button type="button" class="btn btn-warning waves-effect waves-light" data-toggle="popover" data-placement="bottom" title="tooltip on bottom" data-content="bottom by popover">rating
-                                        </button>
-                                    </div>
-                                    <div class="col-9">
-                                        <p class="m-b-0">4000+ Ratings Received</p>
-                                    </div>
-                                </div>
-                                <!-- popover card end -->
-                            </div>
-                            <div class="col-sm-4">
-                                <!-- popover card start -->
-                                <div class="card o-visible">
-                                    <div class="card-header">
-                                        <h5>Movie Title</h5>
-                                    </div>
-                                     <div class="card mat-clr-stat-card text-white blue m-15">
-                                        <div class="card-block">
-                                            <div class="row">
-                                                <div class="col-6 text-center">
-                                                    <i class="fas fa-trophy mat-icon f-24"></i>
-                                                    <p class="m-b-0">Movie Icon</p>
-                                                </div>
-                                                <div class="col-6 cst-cont bg-c-blue">
-                                                    <h5>Cast</h5>
-                                                    <p class="m-b-0">Movie Info</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-9">
-                                        <p class="m-b-0">Rate this movie:</p>
-                                        <span class="fas fa-star checked"></span>
-                                        <span class="fas fa-star checked"></span>
-                                        <span class="fas fa-star checked"></span>
-                                        <span class="fas fa-star"></span>
-                                        <span class="fas fa-star"></span>
-                                    </div>
-                                    <div class="card mat-clr-stat-card text-white green m-15">
-                                        <button type="button" class="btn btn-warning waves-effect waves-light" data-toggle="popover" data-placement="bottom" title="tooltip on bottom" data-content="bottom by popover">rating
-                                        </button>
-                                    </div>
-                                    <div class="col-9">
-                                        <p class="m-b-0">4000+ Ratings Received</p>
-                                    </div>
-                                </div>
-                                <!-- popover card end -->
-                            </div>
-                            <div class="col-sm-4">
-                                <!-- popover card start -->
-                                <div class="card o-visible">
-                                    <div class="card-header">
-                                        <h5>Movie Title</h5>
-                                    </div>
-                                     <div class="card mat-clr-stat-card text-white blue m-15">
-                                        <div class="card-block">
-                                            <div class="row">
-                                                <div class="col-6 text-center">
-                                                    <i class="fas fa-trophy mat-icon f-24"></i>
-                                                    <p class="m-b-0">Movie Icon</p>
-                                                </div>
-                                                <div class="col-6 cst-cont bg-c-blue">
-                                                    <h5>Cast</h5>
-                                                    <p class="m-b-0">Movie Info</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-9">
-                                        <p class="m-b-0">Rate this movie:</p>
-                                        <span class="fas fa-star checked"></span>
-                                        <span class="fas fa-star checked"></span>
-                                        <span class="fas fa-star checked"></span>
-                                        <span class="fas fa-star"></span>
-                                        <span class="fas fa-star"></span>
-                                    </div>
-                                    <div class="card mat-clr-stat-card text-white green m-15">
-                                        <button type="button" class="btn btn-warning waves-effect waves-light" data-toggle="popover" data-placement="bottom" title="tooltip on bottom" data-content="bottom by popover">rating
-                                        </button>
-                                    </div>
-                                    <div class="col-9">
-                                        <p class="m-b-0">4000+ Ratings Received</p>
-                                    </div>
-                                </div>
-                                <!-- popover card end -->
-                            </div>
+						</div>
+					</div>
+					<!-- Page-body end -->
+				</div>
+			</div>
+		</div>
 
+		<div class="p-35 p-b-0">
+			<form class="form-material" id="neo4jsearch" action="/neo4jsearch">
+				<div class="form-group form-primary">
+					<input type="text" name="neo4jsearch" class="form-control" placeholder="Search Movie">
+					<span class="form-bar"></span>
+				</div>
+			</form>
+		</div>
 
-                        </div>
-                    </div>
-                    <!-- Page-body end -->
-                </div>
-            </div>
-        </div>
+		<div class="p-35">
+			<p>Search from the neo4j database:</p>
+			<!-- neo4j database search section start -->
+			<table style="width:50%">
+				<tr>
+					<th>movie name</th>
+				</tr>
+			{% for row in neo4jSearchResults %}
+				<tr>
+					 <td>{{ row[0]["movieTitle"] }}</td>
+				</tr>
+			{% endfor %}
+			</table>
+			<!-- neo4j database search section end -->
+		</div>
 
-        <div class="p-35 p-b-0">
-            <form class="form-material" id="neo4jsearch" action="/neo4jsearch">
-                <div class="form-group form-primary">
-                    <input type="text" name="neo4jsearch" class="form-control" placeholder="Search Movie">
-                    <span class="form-bar"></span>
-                </div>
-            </form>
-        </div>
-
-        <div class="p-35">
-            <p>Search from the neo4j database:</p>
-            <!-- neo4j database search section start -->
-            <table style="width:50%">
-                <tr>
-                    <th>movie name</th>
-                </tr>
-            {% for row in neo4jSearchResults %}
-                <tr>
-                     <td>{{ row[0]["movieTitle"] }}</td>
-                </tr>
-            {% endfor %}
-            </table>
-            <!-- neo4j database search section end -->
-        </div>
-
-        <!-- relational database section -->
+		<!-- relational database section -->
 <!--          <div class="p-35">
-            <p>The following data is randomly selected from the actors table in MySQL database:</p>
-            
-            <table style="width:50%">
-                <tr>
-                    <th>imdb_id</th>
-                    <th>name</th>
-                </tr>
-            {% for row in results %}
-                <tr>
-                     <td>{{ row[0] }}</td>
-                     <td>{{ row[1] }}</td>
-                     <td>{{ row[2] }}</td>
-                     <td>{{ row[4] }}</td>
-                     <td>{{ row[5] }}</td>
-                     <td>{{ row[6] }}</td>
-                     <td>{{ row[7] }}</td>
-                     <td>{{ row[8] }}</td>
-                     <td>{{ row[9] }}</td>
-                </tr>
-            {% endfor %}
-            </table>
-        </div> -->
+			<p>The following data is randomly selected from the actors table in MySQL database:</p>
+			
+			<table style="width:50%">
+				<tr>
+					<th>imdb_id</th>
+					<th>name</th>
+				</tr>
+			{% for row in results %}
+				<tr>
+					 <td>{{ row[0] }}</td>
+					 <td>{{ row[1] }}</td>
+					 <td>{{ row[2] }}</td>
+					 <td>{{ row[4] }}</td>
+					 <td>{{ row[5] }}</td>
+					 <td>{{ row[6] }}</td>
+					 <td>{{ row[7] }}</td>
+					 <td>{{ row[8] }}</td>
+					 <td>{{ row[9] }}</td>
+				</tr>
+			{% endfor %}
+			</table>
+		</div> -->
 
-        <!-- neo4j database section -->
+		<!-- neo4j database section -->
 <!--         <div class="p-35">
-            <p>The following data is selected from the neo4j database:</p>
-            <table style="width:50%">
-                <tr>
-                    <th>movie name</th>
-                    <th>actor name</th>
-                </tr>
-            {% for row in neo4jResults %}
-                <tr>
-                     <td>{{ row[0][0]["movieTitle"] }}</td>
-                     <td>{{ row[1][0]["actor_name"] }}</td>
-                </tr>
-            {% endfor %}
-            </table>
-        </div> -->
+			<p>The following data is selected from the neo4j database:</p>
+			<table style="width:50%">
+				<tr>
+					<th>movie name</th>
+					<th>actor name</th>
+				</tr>
+			{% for row in neo4jResults %}
+				<tr>
+					 <td>{{ row[0][0]["movieTitle"] }}</td>
+					 <td>{{ row[1][0]["actor_name"] }}</td>
+				</tr>
+			{% endfor %}
+			</table>
+		</div> -->
 
-    </div>
+	</div>
 </body>
 </html>

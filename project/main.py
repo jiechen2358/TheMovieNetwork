@@ -1,5 +1,7 @@
 from flask import Blueprint, render_template, session, request
 from . import mysql 
+import json
+
 
 
 main_bp = Blueprint('main_bp', __name__)
@@ -26,5 +28,5 @@ def mysql_search():
 	conn = mysql.connect()
 	cursor = conn.cursor()
 	cursor.execute("SELECT * FROM movies WHERE title LIKE '%{}%'".format(keyword)) 
-	movies = cursor.fetchall()
+	movies = [list(map(str, row)) for row in cursor.fetchall()]
 	return  render_template("home.html", mysqlSearchResults=movies)

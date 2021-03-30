@@ -14,6 +14,155 @@
 	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/font-awesome-n.min.css') }}">
 	<!-- Style.css -->
 	<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+	<style>
+	.checked {
+		color: orange;
+	}
+	.rating {
+	float:left;
+	}
+
+	/* :not(:checked) is a filter, so that browsers that don’t support :checked don’t 
+	   follow these rules. Every browser that supports :checked also supports :not(), so
+	   it doesn’t make the test unnecessarily selective */
+	.rating:not(:checked) > input {
+		position:absolute;
+		top:-9999px;
+		clip:rect(0,0,0,0);
+	}
+
+	.rating:not(:checked) > label {
+		float:right;
+		width:1em;
+		padding:0 .1em;
+		overflow:hidden;
+		white-space:nowrap;
+		cursor:pointer;
+		font-size:200%;
+		line-height:1.2;
+		color:#ddd;
+		text-shadow:1px 1px #bbb, 2px 2px #666, .1em .1em .2em rgba(0,0,0,.5);
+	}
+
+	.rating:not(:checked) > label:before {
+		content: '★ ';
+	}
+
+	.rating > input:checked ~ label {
+		color: #f70;
+		text-shadow:1px 1px #c60, 2px 2px #940, .1em .1em .2em rgba(0,0,0,.5);
+	}
+
+	.rating:not(:checked) > label:hover,
+	.rating:not(:checked) > label:hover ~ label {
+		color: gold;
+		text-shadow:1px 1px goldenrod, 2px 2px #B57340, .1em .1em .2em rgba(0,0,0,.5);
+	}
+
+	.rating > input:checked + label:hover,
+	.rating > input:checked + label:hover ~ label,
+	.rating > input:checked ~ label:hover,
+	.rating > input:checked ~ label:hover ~ label,
+	.rating > label:hover ~ input:checked ~ label {
+		color: #ea0;
+		text-shadow:1px 1px goldenrod, 2px 2px #B57340, .1em .1em .2em rgba(0,0,0,.5);
+	}
+
+	.rating > label:active {
+		position:relative;
+		top:2px;
+		left:2px;
+	}
+
+	/* end of Lea's code */
+
+	/*
+	 * Clearfix from html5 boilerplate
+	 */
+
+	.clearfix:before,
+	.clearfix:after {
+		content: " "; /* 1 */
+		display: table; /* 2 */
+	}
+
+	.clearfix:after {
+		clear: both;
+	}
+
+	/*
+	 * For IE 6/7 only
+	 * Include this rule to trigger hasLayout and contain floats.
+	 */
+
+	.clearfix {
+		*zoom: 1;
+	}
+
+	/* my stuff */
+	#status, button {
+		margin: 20px 0;
+	}
+
+</style>
+<script>
+	document.addEventListener("DOMContentLoaded", function(event) {
+    // Your code to run since DOM is loaded and ready
+
+	{% if mysqlSearchResults %}
+		var movies = {{mysqlSearchResults|safe}}; 
+		console.log(movies);
+		var container = document.getElementById("mycardcontainer");
+		console.log(container);
+		movies.forEach((row, idx) => {
+			// Create card element
+			var card = document.createElement('div');
+			card.classList = 'card-body';
+
+			// Construct card content
+			var content = `
+			<div class="col-sm-4">
+			<!-- popover card start -->
+			<div class="card o-visible">
+				<div class="card-header">
+					<h5>${row[2]}</h5>
+				</div>
+				 <div class="card mat-clr-stat-card text-white blue m-15">
+					<div class="card-block">
+						<p class="m-b-0">Year: ${row[3]}</p>
+						<p class="m-b-0">duration: ${row[4]}min</p>
+					</div>
+				</div>
+				<form id="ratingForm">
+					<fieldset class="rating">
+						<p>Please rate:</p>
+						<input type="radio" id="star5" name="rating" value="5" /><label for="star5" title="Rocks!">5 stars</label>
+						<input type="radio" id="star4" name="rating" value="4" /><label for="star4" title="Pretty good">4 stars</label>
+						<input type="radio" id="star3" name="rating" value="3" /><label for="star3" title="Meh">3 stars</label>
+						<input type="radio" id="star2" name="rating" value="2" /><label for="star2" title="Kinda bad">2 stars</label>
+						<input type="radio" id="star1" name="rating" value="1" /><label for="star1" title="Sucks big time">1 star</label>
+					</fieldset>
+					<div class="clearfix"></div>
+					<button class="submit clearfix">Submit</button>
+				</form>
+				<div class="col-9">
+					<p class="m-b-0">${row[7]}stars, Average of ${row[6]} ratings</p>
+				</div>
+			</div>
+			<!-- popover card end -->
+			</div>`;
+			
+
+  		// Append newyly created card element to the container
+  		container.innerHTML += content;
+  		})
+	{% endif %}
+});
+</script>
+
+	
+
+
 </head>
 <body>
 	<div class="pcoded-main-container">
@@ -76,124 +225,7 @@
 				<div class="page-wrapper">
 					<!-- Page-body start -->
 					<div class="page-body">
-						<div class="row">
-							<div class="col-sm-4">
-								<!-- popover card start -->
-								<div class="card o-visible">
-									<div class="card-header">
-										<h5>Movie Title</h5>
-									</div>
-									 <div class="card mat-clr-stat-card text-white blue m-15">
-										<div class="card-block">
-											<div class="row">
-												<div class="col-6 text-center">
-													<i class="fas fa-trophy mat-icon f-24"></i>
-													<p class="m-b-0">Movie Icon</p>
-												</div>
-												<div class="col-6 cst-cont bg-c-blue">
-													<h5>Cast</h5>
-													<p class="m-b-0">Movie Info</p>
-												</div>
-											</div>
-										</div>
-									</div>
-									<div class="col-9">
-										<p class="m-b-0">Rate this movie:</p>
-										<span class="fas fa-star checked"></span>
-										<span class="fas fa-star checked"></span>
-										<span class="fas fa-star checked"></span>
-										<span class="fas fa-star"></span>
-										<span class="fas fa-star"></span>
-									</div>
-									<div class="card mat-clr-stat-card text-white green m-15">
-										<button type="button" class="btn btn-warning waves-effect waves-light" data-toggle="popover" data-placement="bottom" title="tooltip on bottom" data-content="bottom by popover">rating
-										</button>
-									</div>
-									<div class="col-9">
-										<p class="m-b-0">4000+ Ratings Received</p>
-									</div>
-								</div>
-								<!-- popover card end -->
-							</div>
-							<div class="col-sm-4">
-								<!-- popover card start -->
-								<div class="card o-visible">
-									<div class="card-header">
-										<h5>Movie Title</h5>
-									</div>
-									 <div class="card mat-clr-stat-card text-white blue m-15">
-										<div class="card-block">
-											<div class="row">
-												<div class="col-6 text-center">
-													<i class="fas fa-trophy mat-icon f-24"></i>
-													<p class="m-b-0">Movie Icon</p>
-												</div>
-												<div class="col-6 cst-cont bg-c-blue">
-													<h5>Cast</h5>
-													<p class="m-b-0">Movie Info</p>
-												</div>
-											</div>
-										</div>
-									</div>
-									<div class="col-9">
-										<p class="m-b-0">Rate this movie:</p>
-										<span class="fas fa-star checked"></span>
-										<span class="fas fa-star checked"></span>
-										<span class="fas fa-star checked"></span>
-										<span class="fas fa-star"></span>
-										<span class="fas fa-star"></span>
-									</div>
-									<div class="card mat-clr-stat-card text-white green m-15">
-										<button type="button" class="btn btn-warning waves-effect waves-light" data-toggle="popover" data-placement="bottom" title="tooltip on bottom" data-content="bottom by popover">rating
-										</button>
-									</div>
-									<div class="col-9">
-										<p class="m-b-0">4000+ Ratings Received</p>
-									</div>
-								</div>
-								<!-- popover card end -->
-							</div>
-							<div class="col-sm-4">
-								<!-- popover card start -->
-								<div class="card o-visible">
-									<div class="card-header">
-										<h5>Movie Title</h5>
-									</div>
-									 <div class="card mat-clr-stat-card text-white blue m-15">
-										<div class="card-block">
-											<div class="row">
-												<div class="col-6 text-center">
-													<i class="fas fa-trophy mat-icon f-24"></i>
-													<p class="m-b-0">Movie Icon</p>
-												</div>
-												<div class="col-6 cst-cont bg-c-blue">
-													<h5>Cast</h5>
-													<p class="m-b-0">Movie Info</p>
-												</div>
-											</div>
-										</div>
-									</div>
-									<div class="col-9">
-										<p class="m-b-0">Rate this movie:</p>
-										<span class="fas fa-star checked"></span>
-										<span class="fas fa-star checked"></span>
-										<span class="fas fa-star checked"></span>
-										<span class="fas fa-star"></span>
-										<span class="fas fa-star"></span>
-									</div>
-									<div class="card mat-clr-stat-card text-white green m-15">
-										<button type="button" class="btn btn-warning waves-effect waves-light" data-toggle="popover" data-placement="bottom" title="tooltip on bottom" data-content="bottom by popover">rating
-										</button>
-									</div>
-									<div class="col-9">
-										<p class="m-b-0">4000+ Ratings Received</p>
-									</div>
-								</div>
-								<!-- popover card end -->
-							</div>
-
-
-						</div>
+						<div class="row" id="mycardcontainer"></div>
 					</div>
 					<!-- Page-body end -->
 				</div>

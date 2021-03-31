@@ -34,8 +34,28 @@ function generate_cards(movies, uid){
 			$(function () {
 				$("#"+row[0]).rateYo({
 				    onSet: function (rating, rateYoInstance) {
-	      					alert("user "+uid + " rated: movielens_title_id " + row[0] + ' '+ rating);
-	      				}
+						alert("user "+uid + " rated: movielens_title_id " + row[0] + ' '+ rating);
+						var request = {
+							movielens_title_id: row[0],
+							rating: rating
+						}
+						$.ajax({
+							url: '/rate',
+							data: JSON.stringify(request),
+							contentType: 'application/json',
+							type: 'POST',
+							async: false, // this is needed in order to get a proper response from server (server is doing a database query and thus takes long)
+							dataType: 'json',
+							success: function(response){
+								alert(response)
+							},
+							error: function(jqXHR, textStatus, errorThrown) {
+								console.log(textStatus);
+								console.log(errorThrown);
+								alert(jqXHR.responseText);
+							}
+						})
+					}
 				});
 			});
 

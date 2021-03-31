@@ -30,9 +30,7 @@ class SampleDataFromNeo4j:
                                                              "WHERE actor.actor_name =~ $name "
                                                              "RETURN actor", {"name": "(?i).*" + q + ".*"}
                                                              )))
-            print(result)
             for record in result:
-                print(record)
                 actors.append(record.values())
             return actors
 

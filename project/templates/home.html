@@ -120,11 +120,19 @@
 				<tr>
 					<th>movie name</th>
 				</tr>
-			{% for row in neo4jSearchResults %}
+			{% for row in neo4jSearchResults[0] %}
 				<tr>
 					 <td>{{ row[0]["movieTitle"] }}</td>
 				</tr>
 			{% endfor %}
+                <tr>
+                    <th>actor name</th>
+                </tr>
+            {% for row in neo4jSearchResults[1] %}
+                <tr>
+                     <td>{{ row[0]["actor_name"] }}</td>
+                </tr>
+            {% endfor %}
 			</table>
 			<!-- neo4j database search section end -->
 		</div>

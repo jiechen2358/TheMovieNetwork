@@ -23,6 +23,19 @@ class SampleDataFromNeo4j:
                 movies.append(record.values())
             return movies
 
+    def get_actors(self, q):
+        with self.driver.session() as session:
+            actors = []
+            result = session.read_transaction(lambda tx: list(tx.run("MATCH (actor:Actors) "
+                                                             "WHERE actor.actor_name =~ $name "
+                                                             "RETURN actor", {"name": "(?i).*" + q + ".*"}
+                                                             )))
+            print(result)
+            for record in result:
+                print(record)
+                actors.append(record.values())
+            return actors
+
     def read_sample_from_neo4j(self):
         with self.driver.session() as session:
             movies = session.read_transaction(self._read_movie_neo4j)
@@ -73,10 +86,10 @@ def get_query_string():
     try:
         # fetch neo4j
         movies = neo4jdb.get_movies(request.args["neo4jsearch"])
-
+        actors = neo4jdb.get_actors(request.args["neo4jsearch"])
     finally:
         neo4jdb.close()
 
-    return  render_template("home.html", neo4jSearchResults=movies)
+    return  render_template("home.html", neo4jSearchResults=[movies,actors])
 
     

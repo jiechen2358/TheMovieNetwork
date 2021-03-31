@@ -20,7 +20,7 @@ def login():
 		if user:
 			# Create session data, we can access this data in other routes
 			session['loggedin'] = True
-			session['id'] = user[0]
+			session['uid'] = user[0]
 			session['username'] = user[1]
 			# Redirect to profile page 
 			return redirect(url_for('main_bp.index'))

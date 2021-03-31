@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, session, request
+from flask import Blueprint, render_template, session, request, redirect, url_for
 from . import mysql 
 import json
 
@@ -29,4 +29,11 @@ def mysql_search():
 	cursor = conn.cursor()
 	cursor.execute("SELECT * FROM movies WHERE title LIKE '%{}%'".format(keyword)) 
 	movies = [list(map(str, row)) for row in cursor.fetchall()]
-	return  render_template("home.html", mysqlSearchResults=movies)
+	# badly written, maybe redirect to .index with added argument mysqlSearchResults
+	if (session.get('loggedin') == True):
+		session['mysqlSearchResults'] = movies
+		return render_template("home.html", username=session['username'], mysqlSearchResults=movies)
+	else: 
+		return render_template("home.html", mysqlSearchResults=movies)
+
+

@@ -14,106 +14,23 @@
 	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/font-awesome-n.min.css') }}">
 	<!-- Style.css -->
 	<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
-	<style>
-	.checked {
-		color: orange;
-	}
-	.rating {
-	float:left;
-	}
+	
+	<script type="text/javascript" src="../static/js/jquery-3.6.0.min.js"></script>
 
-	/* :not(:checked) is a filter, so that browsers that don’t support :checked don’t 
-	   follow these rules. Every browser that supports :checked also supports :not(), so
-	   it doesn’t make the test unnecessarily selective */
-	.rating:not(:checked) > input {
-		position:absolute;
-		top:-9999px;
-		clip:rect(0,0,0,0);
-	}
+	<script src="../static/js/card.js">  </script>
+	<script src="../static/js/jquery.min.js"></script>
+	<link href="{{ url_for('static', filename='css/jquery.rateyo.min.css')}}" rel="stylesheet"/>
+	<script src="../static/js/jquery.rateyo.min.js"></script>
 
-	.rating:not(:checked) > label {
-		float:right;
-		width:1em;
-		padding:0 .1em;
-		overflow:hidden;
-		white-space:nowrap;
-		cursor:pointer;
-		font-size:200%;
-		line-height:1.2;
-		color:#ddd;
-		text-shadow:1px 1px #bbb, 2px 2px #666, .1em .1em .2em rgba(0,0,0,.5);
-	}
+	<script>
+	{% if mysqlSearchResults %}
+		$(document).ready(function() {
+			// Your code to run since DOM is loaded and ready
+			generate_cards({{mysqlSearchResults|safe}});
+		});
+	{% endif %}
 
-	.rating:not(:checked) > label:before {
-		content: '★ ';
-	}
-
-	.rating > input:checked ~ label {
-		color: #f70;
-		text-shadow:1px 1px #c60, 2px 2px #940, .1em .1em .2em rgba(0,0,0,.5);
-	}
-
-	.rating:not(:checked) > label:hover,
-	.rating:not(:checked) > label:hover ~ label {
-		color: gold;
-		text-shadow:1px 1px goldenrod, 2px 2px #B57340, .1em .1em .2em rgba(0,0,0,.5);
-	}
-
-	.rating > input:checked + label:hover,
-	.rating > input:checked + label:hover ~ label,
-	.rating > input:checked ~ label:hover,
-	.rating > input:checked ~ label:hover ~ label,
-	.rating > label:hover ~ input:checked ~ label {
-		color: #ea0;
-		text-shadow:1px 1px goldenrod, 2px 2px #B57340, .1em .1em .2em rgba(0,0,0,.5);
-	}
-
-	.rating > label:active {
-		position:relative;
-		top:2px;
-		left:2px;
-	}
-
-	/* end of Lea's code */
-
-	/*
-	 * Clearfix from html5 boilerplate
-	 */
-
-	.clearfix:before,
-	.clearfix:after {
-		content: " "; /* 1 */
-		display: table; /* 2 */
-	}
-
-	.clearfix:after {
-		clear: both;
-	}
-
-	/*
-	 * For IE 6/7 only
-	 * Include this rule to trigger hasLayout and contain floats.
-	 */
-
-	.clearfix {
-		*zoom: 1;
-	}
-
-	/* my stuff */
-	#status, button {
-		margin: 20px 0;
-	}
-
-</style>
-<script src="../static/js/card.js">  </script>
-<script>
-{% if mysqlSearchResults %}
-	document.addEventListener("DOMContentLoaded", function(event) {
-		// Your code to run since DOM is loaded and ready
-		generate_cards({{mysqlSearchResults|safe}});
-	});
-{% endif %}
-</script>
+	</script>
 	
 
 
@@ -153,14 +70,15 @@
 		<div class="p-35 p-b-0">
 			<form class="form-material" id="mysqlsearch" action="/mysqlsearch">
 				<div class="form-group form-primary">
-					<input type="text" name="mysqlsearch" class="form-control" placeholder="Search Movie">
+					<input type="text" name="mysqlsearch" class="form-control" placeholder="Search Movie from mysql database">
 					<span class="form-bar"></span>
 				</div>
 			</form>
 		</div>
+		<!-- 
+
 		<div class="p-35">
 			<p>Search from the mysql database:</p>
-			<!-- neo4j database search section start -->
 			<table style="width:50%">
 				<tr>
 					<th>movie name</th>
@@ -171,8 +89,8 @@
 				</tr>
 			{% endfor %}
 			</table>
-			<!-- neo4j database search section end -->
 		</div>
+		-->
 
 		<div class="pcoded-inner-content">
 			<div class="main-body">
@@ -189,7 +107,7 @@
 		<div class="p-35 p-b-0">
 			<form class="form-material" id="neo4jsearch" action="/neo4jsearch">
 				<div class="form-group form-primary">
-					<input type="text" name="neo4jsearch" class="form-control" placeholder="Search Movie">
+					<input type="text" name="neo4jsearch" class="form-control" placeholder="Search Movie from neo4j database">
 					<span class="form-bar"></span>
 				</div>
 			</form>

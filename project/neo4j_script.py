@@ -88,6 +88,6 @@ def get_query_string():
     finally:
         neo4jdb.close()
 
-    return  render_template("home.html", neo4jSearchResults=[movies,actors])
+    return  render_template("home.html", neo4jSearchMovieResults=movies, neo4jSearchActorResults=actors)
 
     

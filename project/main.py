@@ -12,28 +12,27 @@ def index():
 	if (session.get('loggedin') == True):
 		return render_template("home.html", username=session['username'])
 	else: 
-		return render_template("home.html")
+		return redirect(url_for('auth_bp.login'))
 
 @main_bp.route('/profile')
 def profile():
 	if (session.get('loggedin') == True):
 		return render_template("profile.html", username= session['username'])
 	else:
-		return render_template('signin.html')
+		return redirect(url_for('auth_bp.login'))
 
 
 @main_bp.route('/mysqlsearch', methods=['GET'])
 def mysql_search():
-	keyword = request.args["mysqlsearch"]
-	conn = mysql.connect()
-	cursor = conn.cursor()
-	cursor.execute("SELECT * FROM movies WHERE title LIKE '%{}%'".format(keyword)) 
-	movies = [list(map(str, row)) for row in cursor.fetchall()]
-	# badly written, maybe redirect to .index with added argument mysqlSearchResults
 	if (session.get('loggedin') == True):
-		session['mysqlSearchResults'] = movies
-		return render_template("home.html", username=session['username'], mysqlSearchResults=movies)
-	else: 
-		return render_template("home.html", mysqlSearchResults=movies)
+		keyword = request.args["mysqlsearch"]
+		conn = mysql.connect()
+		cursor = conn.cursor()
+		cursor.execute("SELECT * FROM movies WHERE title LIKE '%{}%'".format(keyword)) 
+		movies = [list(map(str, row)) for row in cursor.fetchall()]
+		return render_template("home.html", 
+			username=session['username'], uid = session['uid'], mysqlSearchResults=movies)
+	else: #must login to use any search function
+		return redirect(url_for('auth_bp.login'))
 
 

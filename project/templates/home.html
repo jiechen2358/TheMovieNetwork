@@ -26,7 +26,7 @@
 	{% if mysqlSearchResults %}
 		$(document).ready(function() {
 			// Your code to run since DOM is loaded and ready
-			generate_cards({{mysqlSearchResults|safe}});
+			generate_cards({{mysqlSearchResults|safe}}, {{uid}});
 		});
 	{% endif %}
 

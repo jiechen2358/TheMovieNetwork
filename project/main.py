@@ -28,7 +28,7 @@ def mysql_search():
 		keyword = request.args["mysqlsearch"]
 		conn = mysql.connect()
 		cursor = conn.cursor()
-		cursor.execute("SELECT * FROM movies WHERE title LIKE '%{}%'".format(keyword)) 
+		cursor.callproc('sp_mysqlsearch',(session['uid'], keyword))
 		movies = [list(map(str, row)) for row in cursor.fetchall()]
 		return render_template("home.html", 
 			username=session['username'], uid = session['uid'], mysqlSearchResults=movies)

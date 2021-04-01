@@ -27,13 +27,14 @@ function generate_cards(movies, uid){
 					</div>
 				</div>
 			</div>`;
-			
+
 			// Append newyly created card element to the container
 			container.innerHTML += content;
 			// row[0] is movielens_title_id
 			$(function () {
 				$("#"+row[0]).rateYo({
-				    onSet: function (rating, rateYoInstance) {
+					rating: row[8],
+					onSet: function (rating, rateYoInstance) {
 						alert("user "+uid + " rated: movielens_title_id " + row[0] + ' '+ rating);
 						var request = {
 							movielens_title_id: row[0],

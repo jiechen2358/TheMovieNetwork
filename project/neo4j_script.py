@@ -1,7 +1,7 @@
 from neo4j import GraphDatabase
 #from . import neo4jdb
 #from flask import current_app, _app_ctx_stack
-from flask import Blueprint, render_template,session, request
+from flask import Blueprint, render_template,session, request, jsonify
 
 
 class SampleDataFromNeo4j:
@@ -90,4 +90,19 @@ def get_query_string():
 
     return  render_template("home.html", neo4jSearchMovieResults=movies, neo4jSearchActorResults=actors)
 
-    
+
+@neo4j_bp.route("/graph")
+def get_graph():
+    graph = {
+            "nodes": [{"name": "Titanic"}, {"name": "Kate Winslet"},
+                      {"name": "Inception"}, {"name": "Leonardo Dicaprio"},
+                      {"name": "James Cameron"}],
+            "links": [{"source": "Kate Winslet", "target": "Titanic"},
+                      {"source": "James Cameron", "target": "Titanic"},
+                      {"source": "Leonardo Dicaprio", "target": "Titanic"},
+                      {"source": "Leonardo Dicaprio", "target": "Inception"},
+                      {"source": "Kate Winslet", "target": "Inception"}]
+    }
+    # return  render_template("home.html", graph=jsonify(graph))
+
+    return jsonify(graph)

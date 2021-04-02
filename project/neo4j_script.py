@@ -30,12 +30,45 @@ class SampleDataFromNeo4j:
 
     def get_moviesNodesOnly(self, q):
         with self.driver.session() as session:
-            movies = []
             result = session.read_transaction(lambda tx: list(tx.run("MATCH (movie:Movie) "
                                                              "WHERE movie.movieTitle =~ $title "
                                                              "RETURN {nodes: collect(movie.movieTitle)[..5]} AS result", {"title": "(?i).*" + q + ".*"}
                                                              )))
-            return result[0].values()[0]
+            graphJson=result[0].values()[0]
+            nodesList=graphJson["nodes"]
+            length = len(nodesList)
+            nodesNewList = []
+            linksList=[]
+            for i in range(length):
+                nodesNewList.append({"name":nodesList[i]})
+                linksList.append({"source": nodesList[i], "target": nodesList[0]})
+            graphJson["links"] = linksList
+            graphJson['nodes'] = nodesNewList
+            return graphJson
+
+
+    def get_moviesActorRelation(self, q):
+        with self.driver.session() as session:
+            result = session.read_transaction(lambda tx: list(tx.run("MATCH p=(movie:Movie)-[r:Cast]->(actor:Actors) "
+                                                            "WHERE movie.movieTitle=~ $title or actor.actor_name=~ $title "
+                                                            "RETURN movie.movieTitle as target, actor.actor_name as source LIMIT 10",
+                                                            {"title": "(?i).*" + q + ".*"}
+                                                            )))
+            graphJson={}
+            length = len(result)
+            linksList=[]
+            nodeSet=set()
+            nodesList=[]
+            for i in range(length):
+                record = result[i].values()
+                nodeSet.add(record[0])
+                nodeSet.add(record[1])
+                linksList.append({"source":record[1], "target":record[0]})
+            for node in nodeSet:
+                nodesList.append({"name":node})
+            graphJson["links"] = linksList
+            graphJson['nodes'] = nodesList
+            return graphJson
 
     def get_actors(self, q):
         with self.driver.session() as session:
@@ -99,8 +132,8 @@ def get_query_string():
         # fetch neo4j
         movies = neo4jdb.get_movies(request.args["neo4jsearch"])
         actors = neo4jdb.get_actors(request.args["neo4jsearch"])
-        data.lastSearch = neo4jdb.get_moviesNodesOnly(request.args["neo4jsearch"])
-
+        #data.lastSearch = neo4jdb.get_moviesNodesOnly(request.args["neo4jsearch"])
+        data.lastSearch=neo4jdb.get_moviesActorRelation(request.args["neo4jsearch"])
     finally:
         neo4jdb.close()
 
@@ -123,14 +156,5 @@ def get_graph():
         graphJson = jsonify(graph)
     else:
         graphJson=data.lastSearch
-        nodesList=graphJson["nodes"]
-        length = len(nodesList)
-        nodesNewList = []
-        linksList=[]
-        for i in range(length):
-            nodesNewList.append({"name":nodesList[i]})
-            linksList.append({"source": nodesList[i], "target": nodesList[(i+1)%length]})
-        graphJson["links"] = linksList
-        graphJson['nodes'] = nodesNewList
 
     return graphJson

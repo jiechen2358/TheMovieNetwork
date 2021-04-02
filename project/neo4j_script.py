@@ -144,17 +144,17 @@ def get_query_string():
 def get_graph():
     if (data.lastSearch == None):
         graph = {
-            "nodes": [{"name": "Titanic"}, {"name": "Kate Winslet"},
-                      {"name": "Inception"}, {"name": "Leonardo Dicaprio"},
-                      {"name": "James Cameron"}],
-            "links": [{"source": "Kate Winslet", "target": "Titanic"},
-                      {"source": "James Cameron", "target": "Titanic"},
-                      {"source": "Leonardo Dicaprio", "target": "Titanic"},
-                      {"source": "Leonardo Dicaprio", "target": "Inception"},
-                      {"source": "Kate Winslet", "target": "Inception"}]
+            'nodes': [{'name': 'Martin Short'}, {'name': 'Steve Martin'},
+                   {'name': 'Kimberly Williams-Paisley'}, {'name': 'Diane Keaton'},
+                   {'name': 'Philip King'}, {'name': 'In the Name of the Father'},
+                   {'name': 'Father of the Bride Part II'}],
+            'links': [{'source': 'Diane Keaton', 'target': 'Father of the Bride Part II'},
+                   {'source': 'Steve Martin', 'target': 'Father of the Bride Part II'},
+                   {'source': 'Martin Short', 'target': 'Father of the Bride Part II'},
+                   {'source': 'Kimberly Williams-Paisley', 'target': 'Father of the Bride Part II'},
+                   {'source': 'Philip King', 'target': 'In the Name of the Father'}]
         }
         graphJson = jsonify(graph)
     else:
         graphJson=data.lastSearch
-
     return graphJson

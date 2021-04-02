@@ -137,7 +137,7 @@ def get_query_string():
     finally:
         neo4jdb.close()
 
-    return  render_template("home.html", neo4jSearchMovieResults=movies, neo4jSearchActorResults=actors)
+    return  render_template("home.html", username=session['username'], neo4jSearchMovieResults=movies, neo4jSearchActorResults=actors)
 
 
 @neo4j_bp.route("/graph")

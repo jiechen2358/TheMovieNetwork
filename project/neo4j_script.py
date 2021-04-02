@@ -4,6 +4,11 @@ from neo4j import GraphDatabase
 from flask import Blueprint, render_template,session, request, jsonify
 
 
+class DataStore():
+    lastSearch=None
+
+data = DataStore()
+
 class SampleDataFromNeo4j:
 
     def __init__(self, uri, user, password):
@@ -22,6 +27,15 @@ class SampleDataFromNeo4j:
             for record in result:
                 movies.append(record.values())
             return movies
+
+    def get_moviesNodesOnly(self, q):
+        with self.driver.session() as session:
+            movies = []
+            result = session.read_transaction(lambda tx: list(tx.run("MATCH (movie:Movie) "
+                                                             "WHERE movie.movieTitle =~ $title "
+                                                             "RETURN {nodes: collect(movie.movieTitle)[..5]} AS result", {"title": "(?i).*" + q + ".*"}
+                                                             )))
+            return result[0].values()[0]
 
     def get_actors(self, q):
         with self.driver.session() as session:
@@ -85,6 +99,8 @@ def get_query_string():
         # fetch neo4j
         movies = neo4jdb.get_movies(request.args["neo4jsearch"])
         actors = neo4jdb.get_actors(request.args["neo4jsearch"])
+        data.lastSearch = neo4jdb.get_moviesNodesOnly(request.args["neo4jsearch"])
+
     finally:
         neo4jdb.close()
 
@@ -93,7 +109,8 @@ def get_query_string():
 
 @neo4j_bp.route("/graph")
 def get_graph():
-    graph = {
+    if (data.lastSearch == None):
+        graph = {
             "nodes": [{"name": "Titanic"}, {"name": "Kate Winslet"},
                       {"name": "Inception"}, {"name": "Leonardo Dicaprio"},
                       {"name": "James Cameron"}],
@@ -102,7 +119,18 @@ def get_graph():
                       {"source": "Leonardo Dicaprio", "target": "Titanic"},
                       {"source": "Leonardo Dicaprio", "target": "Inception"},
                       {"source": "Kate Winslet", "target": "Inception"}]
-    }
-    # return  render_template("home.html", graph=jsonify(graph))
+        }
+        graphJson = jsonify(graph)
+    else:
+        graphJson=data.lastSearch
+        nodesList=graphJson["nodes"]
+        length = len(nodesList)
+        nodesNewList = []
+        linksList=[]
+        for i in range(length):
+            nodesNewList.append({"name":nodesList[i]})
+            linksList.append({"source": nodesList[i], "target": nodesList[(i+1)%length]})
+        graphJson["links"] = linksList
+        graphJson['nodes'] = nodesNewList
 
-    return jsonify(graph)
+    return graphJson

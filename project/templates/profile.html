@@ -15,7 +15,21 @@
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/font-awesome-n.min.css') }}">
     <!-- Style.css -->
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+
+    <script src="../static/js/card.js">  </script>
+	<script src="../static/js/jquery.min.js"></script>
+	<link href="{{ url_for('static', filename='css/jquery.rateyo.min.css')}}" rel="stylesheet"/>
+	<script src="../static/js/jquery.rateyo.min.js"></script>
+
+    <script>
+        {% if ratedMovies %}
+            $(document).ready(function() {
+                // Your code to run since DOM is loaded and ready
+                generate_cards({{ratedMovies|safe}}, {{uid}});
+            });
+        {% endif %}
     
+        </script>
 </head>
 <body>
     <div class="pcoded-main-container">
@@ -47,137 +61,17 @@
             </div>
             <!-- Page-header end -->
         </div>
-
-        <div class="pcoded-inner-content">
-            <div class="main-body">
-                <div class="page-wrapper">
-                    <!-- Page-body start -->
-                    <div class="page-body">
-                        <div class="row">
-                            <div class="col-sm-4">
-                                <!-- popover card start -->
-                                <div class="card o-visible">
-                                    <div class="card-header">
-                                        <h5>Movie Title</h5>
-                                    </div>
-                                     <div class="card mat-clr-stat-card text-white blue m-15">
-                                        <div class="card-block">
-                                            <div class="row">
-                                                <div class="col-6 text-center">
-                                                    <i class="fas fa-trophy mat-icon f-24"></i>
-                                                    <p class="m-b-0">Movie Icon</p>
-                                                </div>
-                                                <div class="col-6 cst-cont bg-c-blue">
-                                                    <h5>Cast</h5>
-                                                    <p class="m-b-0">Movie Info</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-9">
-                                        <p class="m-b-0">Your rating:</p>
-                                        <span class="fas fa-star checked"></span>
-                                        <span class="fas fa-star checked"></span>
-                                        <span class="fas fa-star checked"></span>
-                                        <span class="fas fa-star"></span>
-                                        <span class="fas fa-star"></span>
-                                    </div>
-                                    <div class="card mat-clr-stat-card text-white green m-15">
-                                        <button type="button" class="btn btn-warning waves-effect waves-light" data-toggle="popover" data-placement="bottom" title="tooltip on bottom" data-content="bottom by popover">update
-                                        </button>
-                                    </div>
-                                    <div class="col-9">
-                                        <p class="m-b-0">4000+ Ratings Received</p>
-                                    </div>
-                                </div>
-                                <!-- popover card end -->
-                            </div>
-                            <div class="col-sm-4">
-                                <!-- popover card start -->
-                                <div class="card o-visible">
-                                    <div class="card-header">
-                                        <h5>Movie Title</h5>
-                                    </div>
-                                     <div class="card mat-clr-stat-card text-white blue m-15">
-                                        <div class="card-block">
-                                            <div class="row">
-                                                <div class="col-6 text-center">
-                                                    <i class="fas fa-trophy mat-icon f-24"></i>
-                                                    <p class="m-b-0">Movie Icon</p>
-                                                </div>
-                                                <div class="col-6 cst-cont bg-c-blue">
-                                                    <h5>Cast</h5>
-                                                    <p class="m-b-0">Movie Info</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-9">
-                                        <p class="m-b-0">Your rating:</p>
-                                        <span class="fas fa-star checked"></span>
-                                        <span class="fas fa-star checked"></span>
-                                        <span class="fas fa-star checked"></span>
-                                        <span class="fas fa-star"></span>
-                                        <span class="fas fa-star"></span>
-                                    </div>
-                                    <div class="card mat-clr-stat-card text-white green m-15">
-                                        <button type="button" class="btn btn-warning waves-effect waves-light" data-toggle="popover" data-placement="bottom" title="tooltip on bottom" data-content="bottom by popover">update
-                                        </button>
-                                    </div>
-                                    <div class="col-9">
-                                        <p class="m-b-0">4000+ Ratings Received</p>
-                                    </div>
-                                </div>
-                                <!-- popover card end -->
-                            </div>
-                            <div class="col-sm-4">
-                                <!-- popover card start -->
-                                <div class="card o-visible">
-                                    <div class="card-header">
-                                        <h5>Movie Title</h5>
-                                    </div>
-                                     <div class="card mat-clr-stat-card text-white blue m-15">
-                                        <div class="card-block">
-                                            <div class="row">
-                                                <div class="col-6 text-center">
-                                                    <i class="fas fa-trophy mat-icon f-24"></i>
-                                                    <p class="m-b-0">Movie Icon</p>
-                                                </div>
-                                                <div class="col-6 cst-cont bg-c-blue">
-                                                    <h5>Cast</h5>
-                                                    <p class="m-b-0">Movie Info</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-9">
-                                        <p class="m-b-0">Your rating:</p>
-                                        <span class="fas fa-star checked"></span>
-                                        <span class="fas fa-star checked"></span>
-                                        <span class="fas fa-star checked"></span>
-                                        <span class="fas fa-star"></span>
-                                        <span class="fas fa-star"></span>
-                                    </div>
-                                    <div class="card mat-clr-stat-card text-white green m-15">
-                                        <button type="button" class="btn btn-warning waves-effect waves-light" data-toggle="popover" data-placement="bottom" title="tooltip on bottom" data-content="bottom by popover">update
-                                        </button>
-                                    </div>
-                                    <div class="col-9">
-                                        <p class="m-b-0">4000+ Ratings Received</p>
-                                    </div>
-                                </div>
-                                <!-- popover card end -->
-                            </div>
-
-
-                        </div>
-                    </div>
-                    <!-- Page-body end -->
-                </div>
-            </div>
-        </div>
-
-
+		<div class="pcoded-inner-content">
+			<div class="main-body">
+				<div class="page-wrapper">
+					<!-- Page-body start -->
+					<div class="page-body">
+						<div class="row" id="mycardcontainer"></div>
+					</div>
+					<!-- Page-body end -->
+				</div>
+			</div>
+		</div>
     </div>
 </body>
 </html>

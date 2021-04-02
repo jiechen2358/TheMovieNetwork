@@ -17,7 +17,12 @@ def index():
 @main_bp.route('/profile')
 def profile():
 	if (session.get('loggedin') == True):
-		return render_template("profile.html", username= session['username'])
+		conn = mysql.connect()
+		cursor = conn.cursor()
+		cursor.callproc('sp_profile',(session['uid'],))
+		movies = [list(map(str, row)) for row in cursor.fetchall()]
+		return render_template("profile.html", username= session['username'],
+			uid = session['uid'], ratedMovies=movies)
 	else:
 		return redirect(url_for('auth_bp.login'))
 

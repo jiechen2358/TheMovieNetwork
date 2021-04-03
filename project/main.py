@@ -56,4 +56,17 @@ def rate_movie():
 	else: #must login to use any search function
 		return redirect(url_for('auth_bp.login'))
 
+@main_bp.route('/delete_rating', methods=['POST'])
+def delete_rating():
+	if (session.get('loggedin') == True):
+		request_body = request.json		
+		print(request_body)
+		conn = mysql.connect()
+		cursor = conn.cursor()
+		cursor.execute("DELETE FROM ratings WHERE movielens_title_id={} AND uid={}".format(request_body["movielens_title_id"],session['uid']))
+		conn.commit()
+		return "rating deleted successfully :)", 200
+	else: #must login to use any search function
+		return redirect(url_for('auth_bp.login'))
+
 

@@ -25,11 +25,23 @@
         {% if ratedMovies %}
             $(document).ready(function() {
                 // Your code to run since DOM is loaded and ready
-                generate_cards({{ratedMovies|safe}}, {{uid}});
+                generate_cards({{ratedMovies|safe}}, {{uid}}, deletable=true);
             });
         {% endif %}
     
-        </script>
+    </script>
+    <style>
+    .delete {
+        float: right;
+        font-size: 21px;
+        font-weight: 700;
+        line-height: 1;
+        color: #000;
+        text-shadow: 0 1px 0 #fff;
+        filter: alpha(opacity=20);
+        opacity: .2;    
+    }   
+    </style>
 </head>
 <body>
     <div class="pcoded-main-container">

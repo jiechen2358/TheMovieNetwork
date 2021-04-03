@@ -1,7 +1,7 @@
 
-// list of rows of movies table 
-function generate_cards(movies, uid){
-		console.log(uid);
+//movies:  list of rows of movies table 
+function generate_cards(movies, uid, deletable=false){
+		//console.log(uid);
 		var container = document.getElementById("mycardcontainer");
 		movies.forEach((row, idx) => {
 			// Create card element
@@ -12,6 +12,9 @@ function generate_cards(movies, uid){
 			var content = `
 			<div class="col-sm-4">
 				<div class="card o-visible">
+					${deletable?
+						`<a class="delete" id="delete${row[0]}" href="#">X</a>`
+					:''}
 					<div class="card-header">
 						<h5>${row[2]}</h5>
 					</div>
@@ -21,7 +24,7 @@ function generate_cards(movies, uid){
 							<p class="m-b-0">duration: ${row[4]}min</p>
 						</div>
 					</div>
-					<div class="star-rating rateYo" id=${row[0]}></div>
+					<div class="star-rating rateYo" id=rateYo${row[0]}></div>
 					<div class="col-9">
 						<p class="m-b-0">${row[7]}stars, Average of ${row[6]} ratings</p>
 					</div>
@@ -32,10 +35,10 @@ function generate_cards(movies, uid){
 			container.innerHTML += content;
 			// row[0] is movielens_title_id
 			$(function () {
-				$("#"+row[0]).rateYo({
+				$("#rateYo"+row[0]).rateYo({
 					rating: row[8],
 					onSet: function (rating, rateYoInstance) {
-						alert("user "+uid + " rated: movielens_title_id " + row[0] + ' '+ rating);
+						//alert("user "+uid + " rated: movielens_title_id " + row[0] + ' '+ rating);
 						var request = {
 							movielens_title_id: row[0],
 							rating: rating
@@ -58,6 +61,32 @@ function generate_cards(movies, uid){
 						})
 					}
 				});
+				$('#delete'+row[0]).click(function(){
+					console.log("at #delete"+row[0])
+					var $target = $(this).parents('.col-sm-4');
+					$target.hide('slow', function(){
+						var request = {movielens_title_id: row[0]}
+						console.log(JSON.stringify(request))
+						$.ajax({
+							url: '/delete_rating',
+							data: JSON.stringify(request),
+							contentType: 'application/json',
+							type: 'POST',
+							async: false, // this is needed in order to get a proper response from server (server is doing a database query and thus takes long)
+							dataType: 'json',
+							success: function(response){
+								alert(response)
+								$target.remove();
+							},
+							error: function(jqXHR, textStatus, errorThrown) {
+								console.log(textStatus);
+								console.log(errorThrown);
+								alert(jqXHR.responseText);
+							} 
+						})
+
+					});
+				})
 			});
 
 

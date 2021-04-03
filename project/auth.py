@@ -63,6 +63,6 @@ def signup():
 def logout():
 	# Remove session data, this will log the user out
 	session.pop('loggedin', None)
-	session.pop('id', None)
+	session.pop('uid', None)
 	session.pop('username', None)
 	return redirect(url_for('main_bp.index'))

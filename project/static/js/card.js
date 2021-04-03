@@ -66,7 +66,6 @@ function generate_cards(movies, uid, deletable=false){
 					var $target = $(this).parents('.col-sm-4');
 					$target.hide('slow', function(){
 						var request = {movielens_title_id: row[0]}
-						console.log(JSON.stringify(request))
 						$.ajax({
 							url: '/delete_rating',
 							data: JSON.stringify(request),

@@ -115,7 +115,7 @@
 
 		<div class="p-35">
 			<p>Search from the neo4j database:</p>
-			<!-- neo4j database search section start -->
+            <!-- neo4j database search section start 
 			<table style="width:50%">
                 <tr>
                     <th>movie name</th>
@@ -138,7 +138,7 @@
                 {% endfor %}                
 
 			</table>
-			<!-- neo4j database search section end -->
+			neo4j database search section end -->
 		</div>
 
         <div id="graph">
@@ -175,7 +175,7 @@
             };
         });
 
-        var force = d3.layout.force().charge(-200).linkDistance(60).size([width, height]).nodes(graph.nodes).links(graph.links).charge(-400).on("tick", tick).start();
+        var force = d3.layout.force().charge(-200).linkDistance(130).size([width, height]).nodes(graph.nodes).links(graph.links).charge(-800).on("tick", tick).start();
         var link = svg.selectAll(".link")
                   .data(graph.links)
                   .enter().append("line")
@@ -186,19 +186,19 @@
                   .enter().append('g')
                   .classed("node",true)
                   .call(force.drag());
-              node.append("circle")
-                  .attr("r", function(d) {return d.name.length*3;})
-                  .style("fill", function(d) {
-                    return color(d.name);
-                  })
+         
+        node.append("circle")
+            .attr("r", function(d) {return d.name.length*3.6;})
+            .style("fill", function(d) {
+                return color(d.name);
+            });
 
-        node.append("text").attr("dx", function(d) {return -d.name.length*1.5;}).text(function (d) { return d.name; })
+        node.append("text").attr("dx", function(d) {return -d.name.length*2.8;}).text(function (d) { return d.name; });
         function tick() {
             link.attr("x1", function(d) { return d.source.x; })
                     .attr("y1", function(d) { return d.source.y; })
                     .attr("x2", function(d) { return d.target.x; })
                     .attr("y2", function(d) { return d.target.y; });
-
             node.attr("transform", function(d) { return "translate(" + d.x + "," + d.y +")"; });
         }
 

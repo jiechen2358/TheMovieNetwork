@@ -147,7 +147,7 @@
 	</div>
 
 <style type="text/css">
-    .node { stroke: #222; stroke-width: 1px; }
+    .node { stroke: #222; stroke-width: 0px; }
     .link { stroke: #999; stroke-opacity: .8; stroke-width: 2px; }
 
 </style>
@@ -155,7 +155,7 @@
 <script type="text/javascript">
     var width = 960, height = 500;
 
-    var color = d3.scale.category20();
+    var color = ['lightblue', 'lightyellow'];
 
     var svg = d3.select("body").append("svg").attr("width", width).attr("height", height);
 
@@ -188,12 +188,13 @@
                   .call(force.drag());
          
         node.append("circle")
-            .attr("r", function(d) {return d.name.length*3.6;})
+            .attr("r", function(d) {return d.name.length*2.5;})
             .style("fill", function(d) {
-                return color(d.name);
+                return color[0];
             });
 
-        node.append("text").attr("dx", function(d) {return -d.name.length*2.8;}).text(function (d) { return d.name; });
+        node.append("text").text(function (d) { return d.name; }).style("text-anchor", "middle").style('font-size','10px');
+;
         function tick() {
             link.attr("x1", function(d) { return d.source.x; })
                     .attr("y1", function(d) { return d.source.y; })

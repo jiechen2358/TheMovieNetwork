@@ -57,15 +57,18 @@ class SampleDataFromNeo4j:
             graphJson={}
             length = len(result)
             linksList=[]
-            nodeSet=set()
+            nodeSet0=set()
+            nodeSet1=set()
             nodesList=[]
             for i in range(length):
                 record = result[i].values()
-                nodeSet.add(record[0])
-                nodeSet.add(record[1])
+                nodeSet0.add(record[0])
+                nodeSet1.add(record[1])
                 linksList.append({"source":record[1], "target":record[0]})
-            for node in nodeSet:
-                nodesList.append({"name":node})
+            for node in nodeSet0:
+                nodesList.append({"name":node, "group":0})
+            for node in nodeSet1:
+                nodesList.append({"name":node, "group":1})                
             graphJson["links"] = linksList
             graphJson['nodes'] = nodesList
             return graphJson

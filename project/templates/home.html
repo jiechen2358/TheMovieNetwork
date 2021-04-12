@@ -112,10 +112,10 @@
 				</div>
 			</form>
 		</div>
+            <!-- neo4j database search section start 
 
 		<div class="p-35">
 			<p>Search from the neo4j database:</p>
-            <!-- neo4j database search section start 
 			<table style="width:50%">
                 <tr>
                     <th>movie name</th>
@@ -138,8 +138,8 @@
                 {% endfor %}                
 
 			</table>
-			neo4j database search section end -->
 		</div>
+			neo4j database search section end -->
 
         <div id="graph">
         </div>
@@ -185,6 +185,11 @@
                   .data(graph.nodes)
                   .enter().append('g')
                   .classed("node",true)
+                  .on('dblclick', function(d) {
+                      var form = document.getElementById("neo4jsearch");
+                  	  form.getElementsByTagName("input")[0].value=d.name;
+                  	  form.submit();              
+                  })
                   .call(force.drag());
          
         node.append("circle")
@@ -194,7 +199,6 @@
             });
 
         node.append("text").text(function (d) { return d.name; }).style("text-anchor", "middle").style('font-size','10px');
-;
         function tick() {
             link.attr("x1", function(d) { return d.source.x; })
                     .attr("y1", function(d) { return d.source.y; })

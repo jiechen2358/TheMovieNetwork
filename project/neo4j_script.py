@@ -146,10 +146,11 @@ def get_query_string():
 def get_graph():
     if (data.lastSearch == None):
         graph = {
-            'nodes': [{'name': 'Martin Short'}, {'name': 'Steve Martin'},
-                   {'name': 'Kimberly Williams-Paisley'}, {'name': 'Diane Keaton'},
-                   {'name': 'Philip King'}, {'name': 'In the Name of the Father'},
-                   {'name': 'Father of the Bride Part II'}],
+            'nodes': [{'name': 'In the Name of the Father', "group": 0},
+                   {'name': 'Father of the Bride Part II', "group": 0},
+                   {'name': 'Martin Short', "group": 1}, {'name': 'Steve Martin', "group": 1},
+                   {'name': 'Kimberly Williams-Paisley', "group": 1}, {'name': 'Diane Keaton', "group": 1},
+                   {'name': 'Philip King', "group": 1}],
             'links': [{'source': 'Diane Keaton', 'target': 'Father of the Bride Part II'},
                    {'source': 'Steve Martin', 'target': 'Father of the Bride Part II'},
                    {'source': 'Martin Short', 'target': 'Father of the Bride Part II'},

@@ -133,14 +133,13 @@ neo4jdb = SampleDataFromNeo4j(DATABASE_URL, DATABASE_USERNAME, DATABASE_PASSWORD
 def get_query_string():
     try:
         # fetch neo4j
-        movies = neo4jdb.get_movies(request.args["neo4jsearch"])
-        actors = neo4jdb.get_actors(request.args["neo4jsearch"])
-        #data.lastSearch = neo4jdb.get_moviesNodesOnly(request.args["neo4jsearch"])
+        #movies = neo4jdb.get_movies(request.args["neo4jsearch"])
+        #actors = neo4jdb.get_actors(request.args["neo4jsearch"])
         data.lastSearch=neo4jdb.get_moviesActorRelation(request.args["neo4jsearch"])
     finally:
         neo4jdb.close()
 
-    return  render_template("home.html", username=session['username'], neo4jSearchMovieResults=movies, neo4jSearchActorResults=actors)
+    return  render_template("home.html", username=session['username'])
 
 
 @neo4j_bp.route("/graph")

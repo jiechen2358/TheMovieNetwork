@@ -145,7 +145,8 @@
         </div>
 
 	</div>
-
+        <div id="neo4jTooltip">
+        </div>
 <style type="text/css">
     .node { stroke: #222; stroke-width: 0px; }
     .link { stroke: #999; stroke-opacity: .8; stroke-width: 2px; }
@@ -191,7 +192,43 @@
                   	  form.submit();              
                   })
                   .call(force.drag());
-         
+
+                /*  .on("mouseover", function(d) {
+                      var form = document.getElementById("mysqlsearch");
+                  	  form.getElementsByTagName("input")[0].value=d.name;
+                  	  form.submit();              
+                  })
+         */
+        node.on('mouseover', function(d) {
+        	var typ = "Actor: ";
+        	if (d.group == 0)
+        	{
+        		typ = "Movie: ";
+        	}
+			d3.select('#neo4jTooltip')
+			    .style('opacity', 1)
+			    .style("top",(d3.mouse(this)[1]-10)+"px")
+			    .style("left", (d3.mouse(this)[0]+10)+"px")
+			    .html("<strong>" + typ + d.name + "</strong><br>" +
+			    	"<strong>Double click node to search</strong>" +'<br>'
+			    	);  
+        });
+        node.on('mousemove', function(d) {
+        	var typ = "Actor: ";
+        	if (d.group == 0)
+        	{
+        		typ = "Movie: ";
+        	}
+			d3.select('#neo4jTooltip').style('opacity', 1)			    
+			    .style("top",(d3.mouse(this)[1]-10)+"px")
+			    .style("left", (d3.mouse(this)[0]+10)+"px")
+			    .html("<strong>" + typ + d.name + "</strong><br>" +
+			    	"<strong>Double click node to search</strong>" +'<br>'
+			    	);  
+        });
+        node.on("mouseout", function() {
+        	d3.select('#neo4jTooltip').style("opacity", 0);
+        })
         node.append("circle")
             .attr("r", function(d) {return d.name.length*2.5;})
             .style("fill", function(d) {

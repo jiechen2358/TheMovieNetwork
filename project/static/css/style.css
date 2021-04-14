@@ -3402,6 +3402,9 @@ select.form-control:not([size]):not([multiple]) {
 
 
 /*====== Margin-left css starts ======*/
+.m-l--5 {
+	margin-left: -5px;
+}
 
 .m-l-0 {
 	margin-left: 0px;
@@ -4066,6 +4069,10 @@ select.form-control:not([size]):not([multiple]) {
 
 .badge-warning {
 	background: #ffe100;
+}
+
+.badge-orange {
+	background: #FFB012;
 }
 
 .badge-default {
@@ -4755,7 +4762,6 @@ table tbody .border-bottom-info td {
 .text-c-purple {
 	color: #536dfe;
 }
-
 
 /*======= All-color css ends  ======= */
 

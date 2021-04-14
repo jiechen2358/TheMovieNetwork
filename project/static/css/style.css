@@ -470,6 +470,10 @@ code {
 	color: #fff;
 }
 
+.page-header .page-block .breadcrumb a:hover {
+	color: orange;
+}
+
 @media only screen and (max-width: 768px) {
 	.page-header .page-block .breadcrumb {
 		float: left;

@@ -181,13 +181,14 @@ def get_graph():
         for node in graphJson['nodes']:
             name = node['name']
             if node['label'] == "movie":
-                #search in the movies table of mysql db, fake it for now
-                node["year"] = 2000
-                node["duration"] = 100
-                node["description"] = "###description placeholder###"
-                node['avgRating'] = 1.1
+                cursor.callproc('sp_searchmoviename', (name,))
+                movieInfo = [list(map(str, row)) for row in cursor.fetchall()][0]
+                node["year"] = movieInfo[0]
+                node["duration"] = movieInfo[1]
+                node["description"] = movieInfo[2]
+                node['avgRating'] = movieInfo[3]
             elif node['label'] == "actor":
-                #search in the actors table of mysql db, fake it for now
-                node["bio"] = "****BIO placeholder****"
-        print(graphJson['nodes'])
+                cursor.callproc('sp_searchactorname', (name,))
+                actorBio = [list(map(str, row)) for row in cursor.fetchall()][0]
+                node["bio"] = actorBio[0]
     return graphJson

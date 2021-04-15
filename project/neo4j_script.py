@@ -2,7 +2,7 @@ from neo4j import GraphDatabase
 #from . import neo4jdb
 #from flask import current_app, _app_ctx_stack
 from flask import Blueprint, render_template,session, request, jsonify
-
+from . import mysql 
 
 class DataStore():
     lastSearch=None
@@ -176,8 +176,10 @@ def get_graph():
         graphJson = jsonify(graph)
     else:
         graphJson=data.lastSearch
+        conn = mysql.connect()
+        cursor = conn.cursor()
         for node in graphJson['nodes']:
-            movieName = node['name']
+            name = node['name']
             if node['label'] == "movie":
                 #search in the movies table of mysql db, fake it for now
                 node["year"] = 2000

@@ -66,9 +66,9 @@ class SampleDataFromNeo4j:
                 nodeSet1.add(record[1])
                 linksList.append({"source":record[1], "target":record[0]})
             for node in nodeSet0:
-                nodesList.append({"name":node, "group":0})
+                nodesList.append({"name":node, "label":"movie"})
             for node in nodeSet1:
-                nodesList.append({"name":node, "group":1})                
+                nodesList.append({"name":node, "label":"actor"})                
             graphJson["links"] = linksList
             graphJson['nodes'] = nodesList
             return graphJson
@@ -145,12 +145,28 @@ def get_query_string():
 @neo4j_bp.route("/graph")
 def get_graph():
     if (data.lastSearch == None):
+        '''
         graph = {
             'nodes': [{'name': 'In the Name of the Father', "group": 0},
                    {'name': 'Father of the Bride Part II', "group": 0},
                    {'name': 'Martin Short', "group": 1}, {'name': 'Steve Martin', "group": 1},
                    {'name': 'Kimberly Williams-Paisley', "group": 1}, {'name': 'Diane Keaton', "group": 1},
                    {'name': 'Philip King', "group": 1}],
+            'links': [{'source': 'Diane Keaton', 'target': 'Father of the Bride Part II'},
+                   {'source': 'Steve Martin', 'target': 'Father of the Bride Part II'},
+                   {'source': 'Martin Short', 'target': 'Father of the Bride Part II'},
+                   {'source': 'Kimberly Williams-Paisley', 'target': 'Father of the Bride Part II'},
+                   {'source': 'Philip King', 'target': 'In the Name of the Father'}]
+        }
+        '''
+        graph = {
+            'nodes': [{'name': 'In the Name of the Father', "label": "movie", "year":1993, "duration":133, "description": "George Banks must deal not only with the pregnancy of his daughter, but also with the unexpected pregnancy of his wife.", "avgRating": 4.3},
+                   {'name': 'Father of the Bride Part II', "label": "movie", "year":1995, "duration":106, "description": "A man's coerced confession to an I.R.A. bombing he did not commit results in the imprisonment of his father as well. An English lawyer fights to free them.", "avgRating": 3.1},
+                   {'name': 'Martin Short', "label": "actor", "bio": "Fred Astaire was born in Omaha, Nebraska, to Johanna (Geilus) and Fritz Austerlitz, a brewer. Fred entered show business at age 5. He was successful both in vaudeville and on Broadway in partnership with his sister, Adele Astaire. After Adele retired to marry in 1932, Astaire headed to Hollywood. Signed to RKO, he was loaned to MGM to appear in La danza di Venere (1933) before starting work on RKO's Carioca (1933). In the latter film, he began his highly successful partnership with Ginger Rogers, with whom he danced in 9 RKO pictures. During these years, he was also active in recording and radio. On film, Astaire later appeared opposite a number of partners through various studios. After a temporary retirement in 1945-7, during which he opened Fred Astaire Dance Studios, Astaire returned to film to star in more musicals through 1957. He subsequently performed a number of straight dramatic roles in film and TV."}, 
+                   {'name': 'Steve Martin', "label": "actor", "bio": "Fred Astaire was born in Omaha, Nebraska, to Johanna (Geilus) and Fritz Austerlitz, a brewer. Fred entered show business at age 5. He was successful both in vaudeville and on Broadway in partnership with his sister, Adele Astaire. After Adele retired to marry in 1932, Astaire headed to Hollywood. Signed to RKO, he was loaned to MGM to appear in La danza di Venere (1933) before starting work on RKO's Carioca (1933). In the latter film, he began his highly successful partnership with Ginger Rogers, with whom he danced in 9 RKO pictures. During these years, he was also active in recording and radio. On film, Astaire later appeared opposite a number of partners through various studios. After a temporary retirement in 1945-7, during which he opened Fred Astaire Dance Studios, Astaire returned to film to star in more musicals through 1957. He subsequently performed a number of straight dramatic roles in film and TV."},
+                   {'name': 'Kimberly Williams-Paisley', "label": "actor", "bio": "Fred Astaire was born in Omaha, Nebraska, to Johanna (Geilus) and Fritz Austerlitz, a brewer. Fred entered show business at age 5. He was successful both in vaudeville and on Broadway in partnership with his sister, Adele Astaire. After Adele retired to marry in 1932, Astaire headed to Hollywood. Signed to RKO, he was loaned to MGM to appear in La danza di Venere (1933) before starting work on RKO's Carioca (1933). In the latter film, he began his highly successful partnership with Ginger Rogers, with whom he danced in 9 RKO pictures. During these years, he was also active in recording and radio. On film, Astaire later appeared opposite a number of partners through various studios. After a temporary retirement in 1945-7, during which he opened Fred Astaire Dance Studios, Astaire returned to film to star in more musicals through 1957. He subsequently performed a number of straight dramatic roles in film and TV."}, 
+                   {'name': 'Diane Keaton', "label": "actor", "bio": "Fred Astaire was born in Omaha, Nebraska, to Johanna (Geilus) and Fritz Austerlitz, a brewer. Fred entered show business at age 5. He was successful both in vaudeville and on Broadway in partnership with his sister, Adele Astaire. After Adele retired to marry in 1932, Astaire headed to Hollywood. Signed to RKO, he was loaned to MGM to appear in La danza di Venere (1933) before starting work on RKO's Carioca (1933). In the latter film, he began his highly successful partnership with Ginger Rogers, with whom he danced in 9 RKO pictures. During these years, he was also active in recording and radio. On film, Astaire later appeared opposite a number of partners through various studios. After a temporary retirement in 1945-7, during which he opened Fred Astaire Dance Studios, Astaire returned to film to star in more musicals through 1957. He subsequently performed a number of straight dramatic roles in film and TV."},
+                   {'name': 'Philip King', "label": "actor", "bio": "Fred Astaire was born in Omaha, Nebraska, to Johanna (Geilus) and Fritz Austerlitz, a brewer. Fred entered show business at age 5. He was successful both in vaudeville and on Broadway in partnership with his sister, Adele Astaire. After Adele retired to marry in 1932, Astaire headed to Hollywood. Signed to RKO, he was loaned to MGM to appear in La danza di Venere (1933) before starting work on RKO's Carioca (1933). In the latter film, he began his highly successful partnership with Ginger Rogers, with whom he danced in 9 RKO pictures. During these years, he was also active in recording and radio. On film, Astaire later appeared opposite a number of partners through various studios. After a temporary retirement in 1945-7, during which he opened Fred Astaire Dance Studios, Astaire returned to film to star in more musicals through 1957. He subsequently performed a number of straight dramatic roles in film and TV."}],
             'links': [{'source': 'Diane Keaton', 'target': 'Father of the Bride Part II'},
                    {'source': 'Steve Martin', 'target': 'Father of the Bride Part II'},
                    {'source': 'Martin Short', 'target': 'Father of the Bride Part II'},

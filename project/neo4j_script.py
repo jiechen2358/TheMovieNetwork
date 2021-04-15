@@ -176,4 +176,16 @@ def get_graph():
         graphJson = jsonify(graph)
     else:
         graphJson=data.lastSearch
+        for node in graphJson['nodes']:
+            movieName = node['name']
+            if node['label'] == "movie":
+                #search in the movies table of mysql db, fake it for now
+                node["year"] = 2000
+                node["duration"] = 100
+                node["description"] = "###description placeholder###"
+                node['avgRating'] = 1.1
+            elif node['label'] == "actor":
+                #search in the actors table of mysql db, fake it for now
+                node["bio"] = "****BIO placeholder****"
+        print(graphJson['nodes'])
     return graphJson

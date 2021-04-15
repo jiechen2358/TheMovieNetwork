@@ -9,7 +9,7 @@ class DataStore():
 
 data = DataStore()
 
-class SampleDataFromNeo4j:
+class DataFromNeo4j:
 
     def __init__(self, uri, user, password):
         self.driver = GraphDatabase.driver(uri, auth=(user, password))
@@ -126,7 +126,7 @@ neo4j_bp = Blueprint('neo4j_bp', __name__)
 DATABASE_USERNAME="neo4j"
 DATABASE_PASSWORD="CodeBunnyz123"
 DATABASE_URL="bolt://172.22.152.19:7687"
-neo4jdb = SampleDataFromNeo4j(DATABASE_URL, DATABASE_USERNAME, DATABASE_PASSWORD)
+neo4jdb = DataFromNeo4j(DATABASE_URL, DATABASE_USERNAME, DATABASE_PASSWORD)
 
 
 @neo4j_bp.route('/neo4jsearch', methods=['GET'])

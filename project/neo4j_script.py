@@ -188,7 +188,7 @@ def get_graph():
                 node["description"] = movieInfo[2]
                 node['avgRating'] = movieInfo[3]
             elif node['label'] == "actor":
-                cursor.callproc('sp_searchactorname', (name,))
+                cursor.callproc('sp_searchactorbio', (name,))
                 actorBio = [list(map(str, row)) for row in cursor.fetchall()][0]
-                node["bio"] = actorBio[0]
+                node["bio"] = actorBio[0]+"..."
     return graphJson

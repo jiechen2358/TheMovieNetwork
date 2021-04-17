@@ -208,7 +208,7 @@
                   .classed("node",true)
                   .on('dblclick', function(d) {
                       var form = document.getElementById("neo4jsearch");
-                  	  form.getElementsByTagName("input")[0].value=d.name;
+                  	  form.getElementsByTagName("input")[0].value=d.title;
                   	  form.submit();              
                   })
                   .call(force.drag());
@@ -223,14 +223,14 @@
     		.style("border-width", "1px")
     		.style("border-radius", "5px")
     		.style("padding", "10px");
-    		
+
         node.on('mouseover', function(d) {
         	if (d.label == "actor")
         	{
 				tooltip.style('opacity', 1)
 			    	.style("top",(event.pageY-10)+"px")
 			    	.style("left", (event.pageX+10)+"px")
-			    	.html("<strong>" + "Actor: " + d.name + "</strong><br>" +
+			    	.html("<strong>" + "Actor: " + d.title + "</strong><br>" +
 			    		"<strong>" + "    " + d.bio + "</strong><br>" +
 			    		"<strong>Double click node to search</strong>" +'<br>'
 			    		);  
@@ -240,7 +240,7 @@
 				tooltip.style('opacity', 1)
 			    	.style("top",(event.pageY-10)+"px")
 			    	.style("left", (event.pageX+10)+"px")
-			    	.html("<strong>" + "Movie: " + d.name + "</strong><br>" +
+			    	.html("<strong>" + "Movie: " + d.title + "</strong><br>" +
 			    		"<strong>" + "Year: " + d.year + "</strong><br>" +
 			    		"<strong>" + "Duration: " + d.duration + "</strong><br>" +
 			    		"<strong>" + "Description: " + d.description + "</strong><br>" +
@@ -256,7 +256,7 @@
 				tooltip.style('opacity', 1)
 			    	.style("top",(event.pageY-10)+"px")
 			    	.style("left", (event.pageX+10)+"px")
-			    	.html("<strong>" + "Actor: " + d.name + "</strong><br>" +
+			    	.html("<strong>" + "Actor: " + d.title + "</strong><br>" +
 			    		"<strong>" + "    " + d.bio + "</strong><br>" +
 			    		"<strong>Double click node to search</strong>" +'<br>'
 			    		);  
@@ -266,7 +266,7 @@
 				tooltip.style('opacity', 1)
 			    	.style("top",(event.pageY-10)+"px")
 			    	.style("left", (event.pageX+10)+"px")
-			    	.html("<strong>" + "Movie: " + d.name + "</strong><br>" +
+			    	.html("<strong>" + "Movie: " + d.title + "</strong><br>" +
 			    		"<strong>" + "Year: " + d.year + "</strong><br>" +
 			    		"<strong>" + "Duration: " + d.duration + "</strong><br>" +
 			    		"<strong>" + "Description: " + d.description + "</strong><br>" +
@@ -279,12 +279,12 @@
         	tooltip.style("opacity", 0);
         })
         node.append("circle")
-            .attr("r", function(d) {return d.name.length*2.5;})
+            .attr("r", function(d) {return d.title.length*2.5;})
             .style("fill", function(d) {
                 return color(d.label);
             });
 
-        node.append("text").text(function (d) { return d.name; }).style("text-anchor", "middle").style('font-size','10px');
+        node.append("text").text(function (d) { return d.title; }).style("text-anchor", "middle").style('font-size','10px');
         function tick() {
             link.attr("x1", function(d) { return d.source.x; })
                     .attr("y1", function(d) { return d.source.y; })

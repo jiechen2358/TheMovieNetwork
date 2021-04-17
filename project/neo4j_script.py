@@ -51,27 +51,10 @@ class DataFromNeo4j:
         with self.driver.session() as session:
             result = session.read_transaction(lambda tx: list(tx.run("MATCH p=(movie:Movie)-[r:Cast]->(actor:Actors) "
                                                             "WHERE movie.movieTitle=~ $title or actor.actor_name=~ $title "
-                                                            "RETURN movie.movieTitle as target, actor.actor_name as source LIMIT 10",
+                                                            "RETURN movie.movieId,actor.actor_id LIMIT 10",
                                                             {"title": "(?i).*" + q + ".*"}
                                                             )))
-            graphJson={}
-            length = len(result)
-            linksList=[]
-            nodeSet0=set()
-            nodeSet1=set()
-            nodesList=[]
-            for i in range(length):
-                record = result[i].values()
-                nodeSet0.add(record[0])
-                nodeSet1.add(record[1])
-                linksList.append({"source":record[1], "target":record[0]})
-            for node in nodeSet0:
-                nodesList.append({"name":node, "label":"movie"})
-            for node in nodeSet1:
-                nodesList.append({"name":node, "label":"actor"})                
-            graphJson["links"] = linksList
-            graphJson['nodes'] = nodesList
-            return graphJson
+            return result
 
     def get_actors(self, q):
         with self.driver.session() as session:
@@ -160,35 +143,45 @@ def get_graph():
         }
         '''
         graph = {
-            'nodes': [{'name': 'In the Name of the Father', "label": "movie", "year":1993, "duration":133, "description": "A man's coerced confession to an I.R.A. bombing he did not commit results in the imprisonment of his father as well. An English lawyer fights to free them.", "avgRating": 4.3},
-                   {'name': 'Father of the Bride Part II', "label": "movie", "year":1995, "duration":106, "description": "George Banks must deal not only with the pregnancy of his daughter, but also with the unexpected pregnancy of his wife.", "avgRating": 3.1},
-                   {'name': 'Martin Short', "label": "actor", "bio": "Martin Short was born on March 26, 1950 in Hamilton, Ontario, Canada as Martin Hayter Short. He is an actor and writer, known for Santa Clause è nei guai (2006), Vizio di forma (2014) and I tre amigos"}, 
-                   {'name': 'Steve Martin', "label": "actor", "bio": "Steve Martin was born on August 14, 1945 in Waco, Texas, USA as Stephen Glenn Martin to Mary Lee (née Stewart; 1913-2002) and Glenn Vernon Martin (1914-1997), a real estate salesman and aspiring actor"},
-                   {'name': 'Kimberly Williams-Paisley', "label": "actor", "bio": "Kimberly Williams-Paisley was born on September 14, 1971 in Rye, New York, USA as Kimberly Payne Williams. She is an actress and producer, known for Il padre della sposa (1991), La vita secondo Jim (2"},
-                   {'name': 'Diane Keaton', "label": "actor", "bio": "Diane Keaton was born Diane Hall in Los Angeles, California, to Dorothy Deanne (Keaton), an amateur photographer, and John Newton Ignatius 'Jack' Hall, a civil engineer and real estate broker. She stu"},
-                   {'name': 'Philip King', "label": "actor", "bio": "Philip King is a producer and director, known for This Is My Father (1998), Freedom Highway: Songs that Shaped a Century (2001) and Gabriel Byrne: Stories from Home (2008)"}],
-            'links': [{'source': 'Diane Keaton', 'target': 'Father of the Bride Part II'},
-                   {'source': 'Steve Martin', 'target': 'Father of the Bride Part II'},
-                   {'source': 'Martin Short', 'target': 'Father of the Bride Part II'},
-                   {'source': 'Kimberly Williams-Paisley', 'target': 'Father of the Bride Part II'},
-                   {'source': 'Philip King', 'target': 'In the Name of the Father'}]
+            'nodes': [{"name":'tt0107207','title': 'In the Name of the Father', "label": "movie", "year":1993, "duration":133, "description": "A man's coerced confession to an I.R.A. bombing he did not commit results in the imprisonment of his father as well. An English lawyer fights to free them.", "avgRating": 4.3},
+                   {"name":'tt0113041','title': 'Father of the Bride Part II', "label": "movie", "year":1995, "duration":106, "description": "George Banks must deal not only with the pregnancy of his daughter, but also with the unexpected pregnancy of his wife.", "avgRating": 3.1},
+                   {"name":"nm0001737",'title': 'Martin Short', "label": "actor", "bio": "Martin Short was born on March 26, 1950 in Hamilton, Ontario, Canada as Martin Hayter Short. He is an actor and writer, known for Santa Clause è nei guai (2006), Vizio di forma (2014) and I tre amigos"}, 
+                   {"name":"nm0000188",'title': 'Steve Martin', "label": "actor", "bio": "Steve Martin was born on August 14, 1945 in Waco, Texas, USA as Stephen Glenn Martin to Mary Lee (née Stewart; 1913-2002) and Glenn Vernon Martin (1914-1997), a real estate salesman and aspiring actor"},
+                   {"name":"nm0931090",'title': 'Kimberly Williams-Paisley', "label": "actor", "bio": "Kimberly Williams-Paisley was born on September 14, 1971 in Rye, New York, USA as Kimberly Payne Williams. She is an actress and producer, known for Il padre della sposa (1991), La vita secondo Jim (2"},
+                   {"name":"nm0000473",'title': 'Diane Keaton', "label": "actor", "bio": "Diane Keaton was born Diane Hall in Los Angeles, California, to Dorothy Deanne (Keaton), an amateur photographer, and John Newton Ignatius 'Jack' Hall, a civil engineer and real estate broker. She stu"},
+                   {"name":"nm2535022",'title': 'Philip King', "label": "actor", "bio": "Philip King is a producer and director, known for This Is My Father (1998), Freedom Highway: Songs that Shaped a Century (2001) and Gabriel Byrne: Stories from Home (2008)"}],
+            'links': [{'source': 'nm0000473', 'target': 'tt0113041'},
+                   {'source': 'nm0000188', 'target': 'tt0113041'},
+                   {'source': 'nm0001737', 'target': 'tt0113041'},
+                   {'source': 'nm0931090', 'target': 'tt0113041'},
+                   {'source': 'nm2535022', 'target': 'tt0107207'}]
         }
         graphJson = jsonify(graph)
     else:
-        graphJson=data.lastSearch
+        neo4jResults=data.lastSearch
+#movieid, actor id
+        nodeSet0=set()
+        nodeSet1=set()
+        linksList=[]
+        nodesList=[]
+        graphJson={}
+        for neo4jResult in neo4jResults:
+            record = neo4jResult.values()
+            nodeSet0.add(record[0])
+            nodeSet1.add(record[1])
+            linksList.append({"source":record[1], "target":record[0]})
+
         conn = mysql.connect()
-        cursor = conn.cursor()
-        for node in graphJson['nodes']:
-            name = node['name']
-            if node['label'] == "movie":
-                cursor.callproc('sp_searchmoviename', (name,))
-                movieInfo = [list(map(str, row)) for row in cursor.fetchall()][0]
-                node["year"] = movieInfo[0]
-                node["duration"] = movieInfo[1]
-                node["description"] = movieInfo[2]
-                node['avgRating'] = movieInfo[3]
-            elif node['label'] == "actor":
-                cursor.callproc('sp_searchactorbio', (name,))
-                actorBio = [list(map(str, row)) for row in cursor.fetchall()][0]
-                node["bio"] = actorBio[0]+"..."
+        cursor = conn.cursor()        
+        for movieId in nodeSet0:
+            cursor.callproc('sp_searchmoviebyid', (movieId,))
+            movieInfo = [list(map(str, row)) for row in cursor.fetchall()][0]
+            nodesList.append({"name":movieId, "title":movieInfo[0], "year":movieInfo[1],"duration":movieInfo[2],"description":movieInfo[3],'avgRating':movieInfo[4],"label":"movie"})
+        for actorId in nodeSet1:
+            cursor.callproc('sp_searchactorbyid', (actorId,))
+            actorInfo = [list(map(str, row)) for row in cursor.fetchall()][0]
+            nodesList.append({"name":actorId, "title":actorInfo[0], "bio":actorInfo[1]+'...',"label":"actor"})            
+        graphJson["links"] = linksList
+        graphJson['nodes'] = nodesList
+
     return graphJson

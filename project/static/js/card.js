@@ -18,16 +18,16 @@ function generate_cards(movies, uid, deletable=false){
 					<div class="card-header">
 						<h5>${row[2]}</h5>
 					</div>
-					 <div class="card mat-clr-stat-card text-white blue m-15">
+					 <div class="card mat-clr-stat-card m-15">
 						<div class="card-block">
-							<p class="m-b-0">Year: ${row[3]}</p>
-							<p class="m-b-0">duration: ${row[4]}min</p>
+							<p class="m-b-0 m-t-10">Year: ${row[3]}</p>
+							<p>duration: ${row[4]}min</p>
+							<div class="star-rating rateYo m-l--5" id=${row[0]}></div>
+							<p class="m-b-0 m-t-10 badge badge-orange f-16">${row[7]} star</p>
+							<p>Average of ${row[6]} ratings</p>
 						</div>
 					</div>
-					<div class="star-rating rateYo" id=rateYo${row[0]}></div>
-					<div class="col-9">
-						<p class="m-b-0">${row[7]}stars, Average of ${row[6]} ratings</p>
-					</div>
+
 				</div>
 			</div>`;
 

@@ -69,6 +69,29 @@
 
 		<div class="p-35 p-b-0">
 			<form class="form-material" id="mysqlsearch" action="/mysqlsearch">
+				<select id="Genres">
+					<option value="none" selected disabled hidden>
+						Genres
+					</option>
+					<option value="Action">Action</option>
+					<option value="Drama">Drama</option>
+					<option value="Fantasy">Fantasy</option>
+					<option value="Comedy">Comedy</option>
+					<option value="Crime">Crime</option>
+					<option value="Horror">Horror</option>
+					<option value="Adventure">Adventure</option>
+					<option value="Children">Children</option>
+					<option value="Thriller">Thriller</option>
+					<option value="Western">Western</option>
+					<option value="Animation">Animation</option>
+					<option value="Film-Noir">Film-Noir</option>
+					<option value="Musical">Musical</option>
+					<option value="War">War</option>
+					<option value="Romance">Romance</option>
+					<option value="Sci-Fi">Sci-Fi</option>
+					<option value="Documentary">Documentary</option>
+				</select>
+
 				<div class="form-group form-primary">
 					<input type="text" name="mysqlsearch" class="form-control" placeholder="Search Movie from mysql database">
 					<span class="form-bar"></span>
@@ -112,10 +135,10 @@
 				</div>
 			</form>
 		</div>
+            <!-- neo4j database search section start 
 
 		<div class="p-35">
 			<p>Search from the neo4j database:</p>
-            <!-- neo4j database search section start 
 			<table style="width:50%">
                 <tr>
                     <th>movie name</th>
@@ -138,16 +161,15 @@
                 {% endfor %}                
 
 			</table>
-			neo4j database search section end -->
 		</div>
+			neo4j database search section end -->
 
         <div id="graph">
         </div>
 
 	</div>
-
 <style type="text/css">
-    .node { stroke: #222; stroke-width: 1px; }
+    .node { stroke: #222; stroke-width: 0px; }
     .link { stroke: #999; stroke-opacity: .8; stroke-width: 2px; }
 
 </style>
@@ -155,8 +177,7 @@
 <script type="text/javascript">
     var width = 960, height = 500;
 
-    var color = d3.scale.category20();
-
+    var color = d3.scale.category10();
     var svg = d3.select("body").append("svg").attr("width", width).attr("height", height);
 
     d3.json("/graph", function(error, graph) {
@@ -185,15 +206,85 @@
                   .data(graph.nodes)
                   .enter().append('g')
                   .classed("node",true)
+                  .on('dblclick', function(d) {
+                      var form = document.getElementById("neo4jsearch");
+                  	  form.getElementsByTagName("input")[0].value=d.title;
+                  	  form.submit();              
+                  })
                   .call(force.drag());
-         
+
+        var tooltip = d3.select("body").append("div")
+            .attr("class", "tooltip")
+            .style("opacity", 0)
+            .style("background-color", "white")
+    		.style("border", "solid")
+    		.style("min-width", "200px")
+    		.style("max-width", "250px")
+    		.style("border-width", "1px")
+    		.style("border-radius", "5px")
+    		.style("padding", "10px");
+
+        node.on('mouseover', function(d) {
+        	if (d.label == "actor")
+        	{
+				tooltip.style('opacity', 1)
+			    	.style("top",(event.pageY-10)+"px")
+			    	.style("left", (event.pageX+10)+"px")
+			    	.html("<strong>" + "Actor: " + d.title + "</strong><br>" +
+			    		"<strong>" + "    " + d.bio + "</strong><br>" +
+			    		"<strong>Double click node to search</strong>" +'<br>'
+			    		);  
+        	}
+        	else if (d.label == "movie")
+        	{
+				tooltip.style('opacity', 1)
+			    	.style("top",(event.pageY-10)+"px")
+			    	.style("left", (event.pageX+10)+"px")
+			    	.html("<strong>" + "Movie: " + d.title + "</strong><br>" +
+			    		"<strong>" + "Year: " + d.year + "</strong><br>" +
+			    		"<strong>" + "Duration: " + d.duration + "</strong><br>" +
+			    		"<strong>" + "Description: " + d.description + "</strong><br>" +
+			    		"<strong>" + "Average Rating: " + d.avgRating + "</strong><br>" +
+			    		"<strong>Double click node to search</strong>" +'<br>'
+			    		);  
+        	}
+
+        });
+        node.on('mousemove', function(d) {
+        	if (d.label == "actor")
+        	{
+				tooltip.style('opacity', 1)
+			    	.style("top",(event.pageY-10)+"px")
+			    	.style("left", (event.pageX+10)+"px")
+			    	.html("<strong>" + "Actor: " + d.title + "</strong><br>" +
+			    		"<strong>" + "    " + d.bio + "</strong><br>" +
+			    		"<strong>Double click node to search</strong>" +'<br>'
+			    		);  
+        	}
+        	else if (d.label == "movie")
+        	{
+				tooltip.style('opacity', 1)
+			    	.style("top",(event.pageY-10)+"px")
+			    	.style("left", (event.pageX+10)+"px")
+			    	.html("<strong>" + "Movie: " + d.title + "</strong><br>" +
+			    		"<strong>" + "Year: " + d.year + "</strong><br>" +
+			    		"<strong>" + "Duration: " + d.duration + "</strong><br>" +
+			    		"<strong>" + "Description: " + d.description + "</strong><br>" +
+			    		"<strong>" + "Average Rating: " + d.avgRating + "</strong><br>" +
+			    		"<strong>Double click node to search</strong>" +'<br>'
+			    		);  
+        	}
+        });
+        node.on("mouseout", function() {
+        	tooltip.style("opacity", 0);
+        })
         node.append("circle")
-            .attr("r", function(d) {return d.name.length*3.6;})
+            .attr("r", function(d) {return d.title.length*2.5;})
             .style("fill", function(d) {
-                return color(d.name);
+                return color(d.label);
             });
 
-        node.append("text").attr("dx", function(d) {return -d.name.length*2.8;}).text(function (d) { return d.name; });
+        node.append("text").text(function (d) { return d.title; }).style("text-anchor", "middle").style('font-size','10px');
         function tick() {
             link.attr("x1", function(d) { return d.source.x; })
                     .attr("y1", function(d) { return d.source.y; })

@@ -68,9 +68,9 @@
 		</div>
 
 		<div class="p-35 p-b-0">
-			<form class="form-material" id="mysqlsearch" action="/mysqlsearch">
-				<select id="Genres">
-					<option value="none" selected disabled hidden>
+			<form class="form-material" id="mysqlsearch" method = post action="/mysqlsearch">
+				<select id="Genres" name = "Genres">
+					<option value="none">
 						Genres
 					</option>
 					<option value="Action">Action</option>
@@ -92,8 +92,18 @@
 					<option value="Documentary">Documentary</option>
 				</select>
 
+				<select id="Rating" name = "Rating">
+					<option value=0>
+						Rating
+					</option>
+					<option value=4>>4</option>
+					<option value=3>>3</option>
+					<option value=2>>2</option>
+					<option value=1>>1</option>
+				</select>
+
 				<div class="form-group form-primary">
-					<input type="text" name="mysqlsearch" class="form-control" placeholder="Search Movie from mysql database">
+					<input type="text" name = "Keywords" class="form-control" placeholder="Search Movie from mysql database">
 					<span class="form-bar"></span>
 				</div>
 			</form>

@@ -27,16 +27,18 @@ def profile():
 		return redirect(url_for('auth_bp.login'))
 
 
-@main_bp.route('/mysqlsearch', methods=['GET'])
+@main_bp.route('/mysqlsearch', methods=['GET','POST'])
 def mysql_search():
 	if (session.get('loggedin') == True):
-		keyword = request.args["mysqlsearch"]
+		keyword = request.form.get("Keywords")
+		minrating = request.form.get("Rating")
 		conn = mysql.connect()
 		cursor = conn.cursor()
-		cursor.callproc('sp_mysqlsearch',(session['uid'], keyword))
+		cursor.callproc('sp_mysqlsearch',(session['uid'], keyword, minrating))
 		movies = [list(map(str, row)) for row in cursor.fetchall()]
 		return render_template("home.html", 
 			username=session['username'], uid = session['uid'], mysqlSearchResults=movies)
+
 	else: #must login to use any search function
 		return redirect(url_for('auth_bp.login'))
 

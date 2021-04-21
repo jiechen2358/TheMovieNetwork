@@ -32,10 +32,16 @@ def mysql_search():
 	if (session.get('loggedin') == True):
 		keyword = request.form.get("Keywords")
 		minrating = request.form.get("Rating")
+		genre = request.form.get("Genres")
 		conn = mysql.connect()
 		cursor = conn.cursor()
-		cursor.callproc('sp_mysqlsearch',(session['uid'], keyword, minrating))
-		movies = [list(map(str, row)) for row in cursor.fetchall()]
+		movies = []
+		if (genre == ''):
+			cursor.callproc('sp_mysqlsearch',(session['uid'], keyword, minrating))
+			movies = [list(map(str, row)) for row in cursor.fetchall()]
+		else:
+			cursor.callproc('sp_mysqlsearchWithGenre',(session['uid'], keyword, minrating,genre))
+			movies = [list(map(str, row)) for row in cursor.fetchall()]
 		return render_template("home.html", 
 			username=session['username'], uid = session['uid'], mysqlSearchResults=movies)
 

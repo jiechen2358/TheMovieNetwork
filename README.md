@@ -1,5 +1,11 @@
 # TheMovieNetwork
 
+## Launch server
+
+    export FLASK_APP=project
+    export FLASK_DEBUG=1
+    flask run --host=0.0.0 --port=1234
+
 ## Dependencies
 * Python
 * MySQL

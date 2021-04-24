@@ -10,6 +10,12 @@
 * Python
 * MySQL
 * Neo4j
+    * Start Neo4j on VM
+    
+        cd /bin
+        
+        ./neo4j start
+     
 * Flask
 * Open source [bootstrap template](https://themewagon.com/themes/free-bootstrap-4-html-5-admin-dashboard-template-material-able/)
 

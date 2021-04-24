@@ -12,11 +12,17 @@ function generate_cards(movies, uid, deletable=false){
 			var content = `
 			<div class="col-sm-4">
 				<div class="card o-visible">
-					${deletable?
-						`<a class="delete" id="delete${row[0]}" href="#">X</a>`
-					:''}
 					<div class="card-header">
-						<h5>${row[2]}</h5>
+						<div class="row align-items-center">
+							<div class="col-md-8">
+								<h5>${row[2]}</h5>
+							</div>
+							<div class="col-md-4">
+								${deletable?
+									`<a class="delete" id="delete${row[0]}" href="#"><i class="fa fa-times"></i></a>`
+								:''}
+							</div>
+						</div>
 					</div>
 					 <div class="card mat-clr-stat-card m-15">
 						<div class="card-block">

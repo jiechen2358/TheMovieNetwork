@@ -67,6 +67,15 @@
 			<!-- Page-header end -->
 		</div>
 
+		<div class="p-35 p-b-0" id="neo4j">
+			<form class="form-material" id="neo4jsearch" action="/neo4jsearch">
+				<div class="form-group form-primary">
+					<input type="text" name="neo4jsearch" class="form-control" placeholder="Search Movie from neo4j database">
+					<span class="form-bar"></span>
+				</div>
+			</form>
+		</div>
+
 		<div class="p-35 p-b-0">
 			<form class="form-material" id="mysqlsearch" method = post action="/mysqlsearch">
 				<select id="Genres" name = "Genres">
@@ -136,59 +145,17 @@
 				</div>
 			</div>
 		</div>
-
-		<div class="p-35 p-b-0">
-			<form class="form-material" id="neo4jsearch" action="/neo4jsearch">
-				<div class="form-group form-primary">
-					<input type="text" name="neo4jsearch" class="form-control" placeholder="Search Movie from neo4j database">
-					<span class="form-bar"></span>
-				</div>
-			</form>
-		</div>
-            <!-- neo4j database search section start 
-
-		<div class="p-35">
-			<p>Search from the neo4j database:</p>
-			<table style="width:50%">
-                <tr>
-                    <th>movie name</th>
-                </tr>
-                
-                {% for row in neo4jSearchMovieResults %}
-                    <tr>
-                        <td>{{ row[0]["movieTitle"] }}</td>
-                    </tr>
-                {% endfor %}
-                
-                <tr>
-                    <th>actor name</th>
-                </tr>
-                
-                {% for row in neo4jSearchActorResults %}
-                    <tr>
-                        <td>{{ row[0]["actor_name"] }}</td>
-                    </tr>
-                {% endfor %}                
-
-			</table>
-		</div>
-			neo4j database search section end -->
-
-        <div id="graph">
-        </div>
-
 	</div>
 <style type="text/css">
     .node { stroke: #222; stroke-width: 0px; }
     .link { stroke: #999; stroke-opacity: .8; stroke-width: 2px; }
-
 </style>
 <script src="https://d3js.org/d3.v3.min.js" type="text/javascript"></script>
 <script type="text/javascript">
     var width = 960, height = 500;
 
     var color = d3.scale.category10();
-    var svg = d3.select("body").append("svg").attr("width", width).attr("height", height);
+    var svg = d3.select("div#neo4j").append("svg").attr("width", width).attr("height", height);
 
     d3.json("/graph", function(error, graph) {
         if (error) return;

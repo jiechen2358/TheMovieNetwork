@@ -256,7 +256,7 @@
         	tooltip.style("opacity", 0);
         })
         node.append("circle")
-            .attr("r", function(d) {return d.title.length*2.8;})
+            .attr("r", function(d) {return d.title.length*2+20;})
             .style("fill", function(d) {
                 return color(d.label);
             });

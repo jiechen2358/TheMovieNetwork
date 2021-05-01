@@ -173,7 +173,7 @@
             };
         });
 
-        var force = d3.layout.force().charge(-200).linkDistance(130).size([width, height]).nodes(graph.nodes).links(graph.links).charge(-800).on("tick", tick).start();
+        var force = d3.layout.force().charge(-200).linkDistance(150).size([width, height]).nodes(graph.nodes).links(graph.links).charge(-800).on("tick", tick).start();
         var link = svg.selectAll(".link")
                   .data(graph.links)
                   .enter().append("line")
@@ -208,7 +208,7 @@
 			    	.style("top",(event.pageY-10)+"px")
 			    	.style("left", (event.pageX+10)+"px")
 			    	.html("<strong>" + "Actor: " + d.title + "</strong><br>" +
-			    		"<strong>" + "    " + d.bio + "</strong><br>" +
+			    		"<p>" + "    " + d.bio + "</p>" +
 			    		"<strong>Double click node to search</strong>" +'<br>'
 			    		);  
         	}
@@ -218,10 +218,10 @@
 			    	.style("top",(event.pageY-10)+"px")
 			    	.style("left", (event.pageX+10)+"px")
 			    	.html("<strong>" + "Movie: " + d.title + "</strong><br>" +
-			    		"<strong>" + "Year: " + d.year + "</strong><br>" +
-			    		"<strong>" + "Duration: " + d.duration + "</strong><br>" +
-			    		"<strong>" + "Description: " + d.description + "</strong><br>" +
-			    		"<strong>" + "Average Rating: " + d.avgRating + "</strong><br>" +
+			    		"<p>" + "Year: " + d.year + "</p>" +
+			    		"<p>" + "Duration: " + d.duration + "</p>" +
+			    		"<p>" + "Description: " + d.description + "</p>" +
+			    		"<p>" + "Average Rating: " + d.avgRating + "</p>" +
 			    		"<strong>Double click node to search</strong>" +'<br>'
 			    		);  
         	}
@@ -234,7 +234,7 @@
 			    	.style("top",(event.pageY-10)+"px")
 			    	.style("left", (event.pageX+10)+"px")
 			    	.html("<strong>" + "Actor: " + d.title + "</strong><br>" +
-			    		"<strong>" + "    " + d.bio + "</strong><br>" +
+			    		"<p>" + "    " + d.bio + "</p>" +
 			    		"<strong>Double click node to search</strong>" +'<br>'
 			    		);  
         	}
@@ -244,10 +244,10 @@
 			    	.style("top",(event.pageY-10)+"px")
 			    	.style("left", (event.pageX+10)+"px")
 			    	.html("<strong>" + "Movie: " + d.title + "</strong><br>" +
-			    		"<strong>" + "Year: " + d.year + "</strong><br>" +
-			    		"<strong>" + "Duration: " + d.duration + "</strong><br>" +
-			    		"<strong>" + "Description: " + d.description + "</strong><br>" +
-			    		"<strong>" + "Average Rating: " + d.avgRating + "</strong><br>" +
+			    		"<p>" + "Year: " + d.year + "</p>" +
+			    		"<p>" + "Duration: " + d.duration + "</p>" +
+			    		"<p>" + "Description: " + d.description + "</p>" +
+			    		"<p>" + "Average Rating: " + d.avgRating + "</p>" +
 			    		"<strong>Double click node to search</strong>" +'<br>'
 			    		);  
         	}
@@ -256,7 +256,7 @@
         	tooltip.style("opacity", 0);
         })
         node.append("circle")
-            .attr("r", function(d) {return d.title.length*2.5;})
+            .attr("r", function(d) {return d.title.length*2.8;})
             .style("fill", function(d) {
                 return color(d.label);
             });

@@ -159,28 +159,36 @@ def get_graph():
         graphJson = jsonify(graph)
     else:
         neo4jResults=data.lastSearch
-#movieid, actor id
-        nodeSet0=set()
-        nodeSet1=set()
+        movieNodeSet=set()
+        actorNodeSet=set()
         linksList=[]
         nodesList=[]
         graphJson={}
+        conn = mysql.connect()
+        cursor = conn.cursor()
+
         for neo4jResult in neo4jResults:
             record = neo4jResult.values()
-            nodeSet0.add(record[0])
-            nodeSet1.add(record[1])
+            movieNodeSet.add(record[0])
+            actorNodeSet.add(record[1])
             linksList.append({"source":record[1], "target":record[0]})
 
-        conn = mysql.connect()
-        cursor = conn.cursor()        
-        for movieId in nodeSet0:
-            cursor.callproc('sp_searchmoviebyid', (movieId,))
-            movieInfo = [list(map(str, row)) for row in cursor.fetchall()][0]
-            nodesList.append({"name":movieId, "title":movieInfo[0], "year":movieInfo[1],"duration":movieInfo[2],"description":movieInfo[3],'avgRating':movieInfo[4],"label":"movie"})
-        for actorId in nodeSet1:
-            cursor.callproc('sp_searchactorbyid', (actorId,))
-            actorInfo = [list(map(str, row)) for row in cursor.fetchall()][0]
-            nodesList.append({"name":actorId, "title":actorInfo[0], "bio":actorInfo[1]+'...',"label":"actor"})            
+        movieNodeList = list(movieNodeSet)
+        actorNodeList = list(actorNodeSet)
+
+        s = "\',\'"
+        movieIds = "\'" + s.join(movieNodeList) + "\'"
+        actorIds = "\'" + s.join(actorNodeList) + "\'"
+
+        cursor.callproc('sp_searchmoviesbyidarray', (movieIds,))
+        movieInfos = [list(map(str, row)) for row in cursor.fetchall()]
+        for movieInfo in movieInfos:
+            nodesList.append({"name":movieInfo[0], "title":movieInfo[1], "year":movieInfo[2],"duration":movieInfo[3],"description":movieInfo[4],'avgRating':movieInfo[5],"label":"movie"})
+
+        cursor.callproc('sp_searchactorsbyidarray', (actorIds,))
+        actorInfos = [list(map(str, row)) for row in cursor.fetchall()]
+        for actorInfo in actorInfos:
+            nodesList.append({"name":actorInfo[0], "title":actorInfo[1], "bio":actorInfo[2]+'...',"label":"actor"})
         graphJson["links"] = linksList
         graphJson['nodes'] = nodesList
 

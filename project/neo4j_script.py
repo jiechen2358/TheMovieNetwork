@@ -211,12 +211,12 @@ def convertResultToGraph(neo4jResults):
     movieIds = "\'" + s.join(movieNodeList) + "\'"
     actorIds = "\'" + s.join(actorNodeList) + "\'"
 
-    cursor.callproc('sp_searchmoviesbyidarray', (movieIds,))
+    cursor.callproc('sp_searchmoviebyidarray', (movieIds,))
     movieInfos = [list(map(str, row)) for row in cursor.fetchall()]
     for movieInfo in movieInfos:
         nodesList.append({"name":movieInfo[0], "title":movieInfo[1], "year":movieInfo[2],"duration":movieInfo[3],"description":movieInfo[4],'avgRating':movieInfo[5],"label":"movie"})
 
-    cursor.callproc('sp_searchactorsbyidarray', (actorIds,))
+    cursor.callproc('sp_searchactorbyidarray', (actorIds,))
     actorInfos = [list(map(str, row)) for row in cursor.fetchall()]
     for actorInfo in actorInfos:
         nodesList.append({"name":actorInfo[0], "title":actorInfo[1], "bio":actorInfo[2]+'...',"label":"actor"})

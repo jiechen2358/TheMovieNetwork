@@ -157,7 +157,7 @@
 </style>
 <script src="https://d3js.org/d3.v3.min.js" type="text/javascript"></script>
 <script type="text/javascript">
-    var width = 960, height = 500;
+    var width = 1200, height = 800;
 
     var color = d3.scale.category10();
     var svg = d3.select("div#neo4j").append("svg").attr("width", width).attr("height", height);
@@ -178,7 +178,7 @@
             };
         });
 
-        var force = d3.layout.force().charge(-200).linkDistance(150).size([width, height]).nodes(graph.nodes).links(graph.links).charge(-800).on("tick", tick).start();
+        var force = d3.layout.force().linkDistance(150).size([width, height]).nodes(graph.nodes).links(graph.links).charge(-800).on("tick", tick).start();
         var link = svg.selectAll(".link")
                   .data(graph.links)
                   .enter().append("line")
@@ -261,7 +261,7 @@
         	tooltip.style("opacity", 0);
         })
         node.append("circle")
-            .attr("r", function(d) {return d.title.length*2+20;})
+            .attr("r", function(d) {return d.title.length*2+18;})
             .style("fill", function(d) {
                 return color(d.label);
             });

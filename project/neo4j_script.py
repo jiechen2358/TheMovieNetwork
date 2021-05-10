@@ -6,6 +6,7 @@ from . import mysql
 
 class DataStore():
     lastSearch=None
+    dbClkSearch=None
 
 data = DataStore()
 
@@ -119,15 +120,23 @@ def get_query_string():
         #movies = neo4jdb.get_movies(request.args["neo4jsearch"])
         #actors = neo4jdb.get_actors(request.args["neo4jsearch"])
         data.lastSearch=neo4jdb.get_moviesActorRelation(request.args["neo4jsearch"])
+        data.dbClkSearch=None
     finally:
         neo4jdb.close()
-
     return  render_template("home.html", username=session['username'])
 
+@neo4j_bp.route('/neo4jDbclickSearch', methods=['GET'])
+def get_query_string_dbClick():
+    try:
+        # fetch neo4j
+        data.dbClkSearch=neo4jdb.get_moviesActorRelation(request.args["neo4jDbclickSearch"])
+    finally:
+        neo4jdb.close()
+    return  render_template("home.html", username=session['username'])
 
 @neo4j_bp.route("/graph")
 def get_graph():
-    if (data.lastSearch == None):
+    if (data.lastSearch == None and data.dbClkSearch==None):
         '''
         graph = {
             'nodes': [{'name': 'In the Name of the Father', "group": 0},
@@ -157,39 +166,60 @@ def get_graph():
                    {'source': 'nm2535022', 'target': 'tt0107207'}]
         }
         graphJson = jsonify(graph)
-    else:
+    elif (data.lastSearch == None and data.dbClkSearch!=None):
+        neo4jResults=data.dbClkSearch
+        data.lastSearch = neo4jResults
+        graphJson=convertResultToGraph(neo4jResults)
+    elif (data.lastSearch != None and data.dbClkSearch==None):
         neo4jResults=data.lastSearch
-        movieNodeSet=set()
-        actorNodeSet=set()
-        linksList=[]
-        nodesList=[]
-        graphJson={}
-        conn = mysql.connect()
-        cursor = conn.cursor()
+        graphJson=convertResultToGraph(neo4jResults)
+    elif (data.lastSearch != None and data.dbClkSearch!=None):
+        neo4jOldResults=data.lastSearch
+        neo4jNewResults=data.dbClkSearch
+        neo4jResults=mergeDistinctData(neo4jOldResults, neo4jNewResults)
+        data.lastSearch = neo4jResults
+        graphJson=convertResultToGraph(neo4jResults)
+    return graphJson
 
-        for neo4jResult in neo4jResults:
-            record = neo4jResult.values()
-            movieNodeSet.add(record[0])
-            actorNodeSet.add(record[1])
-            linksList.append({"source":record[1], "target":record[0]})
+def mergeDistinctData(list1, list2):
+    resultSet = set()
+    for item in list1:
+        resultSet.add(item)
+    for item in list2:
+        resultSet.add(item)
+    return resultSet
 
-        movieNodeList = list(movieNodeSet)
-        actorNodeList = list(actorNodeSet)
+def convertResultToGraph(neo4jResults):
+    movieNodeSet=set()
+    actorNodeSet=set()
+    linksList=[]
+    nodesList=[]
+    graphJson={}
+    conn = mysql.connect()
+    cursor = conn.cursor()
 
-        s = "\',\'"
-        movieIds = "\'" + s.join(movieNodeList) + "\'"
-        actorIds = "\'" + s.join(actorNodeList) + "\'"
+    for neo4jResult in neo4jResults:
+        record = neo4jResult.values()
+        movieNodeSet.add(record[0])
+        actorNodeSet.add(record[1])
+        linksList.append({"source":record[1], "target":record[0]})
 
-        cursor.callproc('sp_searchmoviesbyidarray', (movieIds,))
-        movieInfos = [list(map(str, row)) for row in cursor.fetchall()]
-        for movieInfo in movieInfos:
-            nodesList.append({"name":movieInfo[0], "title":movieInfo[1], "year":movieInfo[2],"duration":movieInfo[3],"description":movieInfo[4],'avgRating':movieInfo[5],"label":"movie"})
+    movieNodeList = list(movieNodeSet)
+    actorNodeList = list(actorNodeSet)
 
-        cursor.callproc('sp_searchactorsbyidarray', (actorIds,))
-        actorInfos = [list(map(str, row)) for row in cursor.fetchall()]
-        for actorInfo in actorInfos:
-            nodesList.append({"name":actorInfo[0], "title":actorInfo[1], "bio":actorInfo[2]+'...',"label":"actor"})
-        graphJson["links"] = linksList
-        graphJson['nodes'] = nodesList
+    s = "\',\'"
+    movieIds = "\'" + s.join(movieNodeList) + "\'"
+    actorIds = "\'" + s.join(actorNodeList) + "\'"
 
+    cursor.callproc('sp_searchmoviesbyidarray', (movieIds,))
+    movieInfos = [list(map(str, row)) for row in cursor.fetchall()]
+    for movieInfo in movieInfos:
+        nodesList.append({"name":movieInfo[0], "title":movieInfo[1], "year":movieInfo[2],"duration":movieInfo[3],"description":movieInfo[4],'avgRating':movieInfo[5],"label":"movie"})
+
+    cursor.callproc('sp_searchactorsbyidarray', (actorIds,))
+    actorInfos = [list(map(str, row)) for row in cursor.fetchall()]
+    for actorInfo in actorInfos:
+        nodesList.append({"name":actorInfo[0], "title":actorInfo[1], "bio":actorInfo[2]+'...',"label":"actor"})
+    graphJson["links"] = linksList
+    graphJson['nodes'] = nodesList
     return graphJson

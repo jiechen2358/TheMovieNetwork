@@ -74,6 +74,11 @@
 					<span class="form-bar"></span>
 				</div>
 			</form>
+			<form hidden class="form-material" id="neo4jDbclickSearch" action="/neo4jDbclickSearch">
+				<div class="form-group form-primary">
+					<input type="text" name="neo4jDbclickSearch">
+				</div>
+			</form>
 		</div>
 
 		<div class="p-35 p-b-0">
@@ -184,7 +189,7 @@
                   .enter().append('g')
                   .classed("node",true)
                   .on('dblclick', function(d) {
-                      var form = document.getElementById("neo4jsearch");
+                      var form = document.getElementById("neo4jDbclickSearch");
                   	  form.getElementsByTagName("input")[0].value=d.title;
                   	  form.submit();              
                   })
